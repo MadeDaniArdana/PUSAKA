@@ -76,16 +76,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Header */}
         <div style={{ padding: '20px 16px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: '8px',
-              background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(220,38,38,0.4)',
-            }}>
-              <Shield size={16} color="white" />
-            </div>
+            <img src="/logo.png" alt="PUSAKA" style={{ width: 36, height: 36, objectFit: 'contain', filter: 'drop-shadow(2px 5px 6px rgba(0,0,0,0.4)) drop-shadow(0px 2px 3px rgba(0,0,0,0.2))' }} />
             <div>
-              <p style={{ fontFamily: 'Outfit', fontSize: '14px', fontWeight: 700, color: 'white', margin: 0 }}>GriyaSync</p>
+              <p style={{ fontFamily: 'Outfit', fontSize: '16px', fontWeight: 700, color: 'white', margin: 0 }}>PUSAKA</p>
               <p style={{ fontSize: '10px', color: '#dc2626', margin: 0, fontWeight: 600, letterSpacing: '0.08em' }}>ADMIN PANEL</p>
             </div>
           </div>

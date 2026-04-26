@@ -50,11 +50,9 @@ function LoginContent() {
         <div style={{ position: 'absolute', top: -80, right: -80, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(22,163,74,0.15) 0%, transparent 70%)' }} />
         <div style={{ position: 'absolute', bottom: -60, left: -60, width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' }} />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: '10px', background: 'linear-gradient(135deg, #16a34a, #22c55e)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(22,163,74,0.4)' }}>
-            <ShieldCheck size={20} color="white" />
-          </div>
-          <span style={{ fontFamily: 'Outfit', fontSize: '22px', fontWeight: 800 }}>GriyaSync</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', zIndex: 10 }}>
+          <img src="/logo.png" alt="PUSAKA" style={{ width: 52, height: 52, objectFit: 'contain', filter: 'drop-shadow(3px 8px 10px rgba(0,0,0,0.4)) drop-shadow(0px 3px 4px rgba(0,0,0,0.2))' }} />
+          <span style={{ fontFamily: 'Outfit', fontSize: '30px', fontWeight: 800 }}>PUSAKA</span>
         </div>
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', zIndex: 10, gap: '16px' }}>

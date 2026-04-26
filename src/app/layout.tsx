@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GriyaSync — Smart Village Hub",
+  title: "PUSAKA — Smart Village Hub",
   description:
     "Platform pelaporan lingkungan terintegrasi dan Smart Village untuk tata kelola desa yang transparan dan efisien.",
-  keywords: ["smart village", "griyasync", "pelaporan lingkungan", "UMKM desa", "administrasi desa"],
+  keywords: ["smart village", "pusaka", "pelaporan lingkungan", "UMKM desa", "administrasi desa"],
 };
 
 export default function RootLayout({

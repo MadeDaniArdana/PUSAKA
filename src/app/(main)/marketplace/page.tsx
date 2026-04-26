@@ -116,7 +116,7 @@ export default function MarketplacePage() {
     if (!phone) return '';
     let formatted = phone.replace(/\D/g, '');
     if (formatted.startsWith('0')) formatted = '62' + formatted.substring(1);
-    const message = encodeURIComponent(`Halo, saya melihat produk/jasa ${bizName} di GriyaSync. Saya ingin bertanya lebih lanjut.`);
+    const message = encodeURIComponent(`Halo, saya melihat produk/jasa ${bizName} di PUSAKA. Saya ingin bertanya lebih lanjut.`);
     return `https://api.whatsapp.com/send?phone=${formatted}&text=${message}`;
   };
 
@@ -126,7 +126,7 @@ export default function MarketplacePage() {
       {/* Header */}
       <div className="mb-8 text-center relative">
         <h1 className="font-outfit text-2xl md:text-4xl font-extrabold text-slate-900 mb-2 md:mb-3">
-          Pasar <span className="text-green-600">GriyaSync</span>
+          Pasar <span className="text-green-600">PUSAKA</span>
         </h1>
         <p className="text-sm md:text-base text-slate-500 mx-auto max-w-[500px] leading-relaxed mb-6">
           Dukung ekonomi lokal! Temukan berbagai kuliner lezat, produk kerajinan, dan jasa terbaik dari warga sekitar.

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Search, Filter, AlertCircle, FileCheck, XCircle, CheckCircle2 } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Search, Filter, AlertCircle, FileCheck, XCircle, CheckCircle2, Upload, X } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 
 export default function AdminRequestsPage() {
@@ -9,6 +9,11 @@ export default function AdminRequestsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('Semua');
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedRequestForUpload, setSelectedRequestForUpload] = useState<any>(null);
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -39,6 +44,58 @@ export default function AdminRequestsPage() {
     
     // Optimistic UI update
     setRequests(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+  };
+
+  const openUploadModal = (req: any) => {
+    setSelectedRequestForUpload(req);
+    setShowUploadModal(true);
+  };
+
+  const closeUploadModal = () => {
+    setShowUploadModal(false);
+    setSelectedRequestForUpload(null);
+    setFileToUpload(null);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFileToUpload(e.target.files[0]);
+    }
+  };
+
+  const handleUploadAndComplete = async () => {
+    if (!fileToUpload || !selectedRequestForUpload) return;
+    setIsUploading(true);
+
+    try {
+      const fileExt = fileToUpload.name.split('.').pop();
+      const fileName = `documents/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('reports')
+        .upload(fileName, fileToUpload);
+      
+      if (uploadError) throw uploadError;
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('reports')
+        .getPublicUrl(fileName);
+
+      const { error: updateError } = await supabase
+        .from('requests')
+        .update({ status: 'Selesai', file_url: publicUrl })
+        .eq('id', selectedRequestForUpload.id);
+      
+      if (updateError) throw updateError;
+      
+      setRequests(prev => prev.map(r => r.id === selectedRequestForUpload.id ? { ...r, status: 'Selesai', file_url: publicUrl } : r));
+      closeUploadModal();
+      alert('Dokumen berhasil diunggah dan status diperbarui menjadi Selesai.');
+    } catch (err: any) {
+      alert('Gagal mengunggah dokumen: ' + err.message);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const filteredRequests = requests.filter(r => {
@@ -204,7 +261,7 @@ export default function AdminRequestsPage() {
                           </span>
                           {(req.status === 'Disetujui') && (
                             <button 
-                              onClick={() => handleUpdateStatus(req.id, 'Selesai')}
+                              onClick={() => openUploadModal(req)}
                               style={{ 
                                 background: 'transparent', border: 'none', color: '#60a5fa', fontSize: '11px', 
                                 fontWeight: 600, cursor: 'pointer', textDecoration: 'underline'
@@ -223,6 +280,56 @@ export default function AdminRequestsPage() {
           </div>
         )}
       </div>
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: '#1e293b', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '480px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: 'white', margin: 0 }}>Unggah Dokumen Final</h2>
+              <button onClick={closeUploadModal} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div style={{ marginBottom: '24px' }}>
+              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', lineHeight: 1.5 }}>
+                Unggah file dokumen surat (PDF) untuk pemohon <strong style={{ color: 'white' }}>{selectedRequestForUpload?.requester_name}</strong>. Setelah diunggah, pemohon dapat mengunduhnya langsung dari dashboard mereka.
+              </p>
+              
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                style={{ 
+                  border: '2px dashed rgba(255,255,255,0.2)', borderRadius: '16px', padding: '32px', 
+                  textAlign: 'center', cursor: 'pointer', background: 'rgba(15,23,42,0.4)', transition: 'border 0.2s'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
+              >
+                <Upload size={32} color="#64748b" style={{ margin: '0 auto 12px' }} />
+                <p style={{ margin: 0, fontSize: '14px', color: '#f8fafc', fontWeight: 600 }}>
+                  {fileToUpload ? fileToUpload.name : 'Pilih File Dokumen (PDF)'}
+                </p>
+                <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#64748b' }}>Maksimal 5MB</p>
+              </div>
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".pdf,.doc,.docx" />
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button onClick={closeUploadModal} style={{ flex: 1, padding: '12px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#f8fafc', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
+                Batal
+              </button>
+              <button 
+                onClick={handleUploadAndComplete} 
+                disabled={!fileToUpload || isUploading}
+                style={{ flex: 2, padding: '12px', borderRadius: '12px', background: '#3b82f6', border: 'none', color: 'white', fontSize: '14px', fontWeight: 600, cursor: (!fileToUpload || isUploading) ? 'not-allowed' : 'pointer', opacity: (!fileToUpload || isUploading) ? 0.7 : 1 }}
+              >
+                {isUploading ? 'Mengunggah...' : 'Unggah & Selesai'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

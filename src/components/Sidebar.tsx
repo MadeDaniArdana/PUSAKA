@@ -57,10 +57,8 @@ export default function Sidebar() {
       {/* Mobile Topbar */}
       <div className="md:hidden flex items-center justify-between bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 w-full shadow-sm">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center shadow-md">
-            <span className="font-outfit font-bold text-[12px] text-white">GS</span>
-          </div>
-          <span className="font-outfit font-bold text-[16px] text-slate-800">GriyaSync</span>
+          <img src="/logo.png" alt="PUSAKA Logo" className="w-8 h-8 object-contain transition-transform hover:scale-105" style={{ filter: 'drop-shadow(2px 5px 6px rgba(0,0,0,0.25)) drop-shadow(0px 2px 3px rgba(0,0,0,0.15))' }} />
+          <span className="font-outfit font-bold text-[18px] text-slate-800">PUSAKA</span>
         </div>
         <button onClick={() => setIsOpen(true)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
           <Menu size={24} />
@@ -93,11 +91,9 @@ export default function Sidebar() {
 
         {/* Logo */}
         <div className="flex flex-col items-center pt-5 pb-4 px-2">
-          <div className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center mb-1 shadow-md">
-            <span style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: '14px', color: 'white' }}>GS</span>
-          </div>
-          <span style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: '12px', color: '#0f172a', letterSpacing: '-0.01em' }}>
-            GriyaSync
+          <img src="/logo.png" alt="PUSAKA" className="w-10 h-10 object-contain mb-1 transition-transform hover:scale-105" style={{ filter: 'drop-shadow(2px 5px 6px rgba(0,0,0,0.25)) drop-shadow(0px 2px 3px rgba(0,0,0,0.15))' }} />
+          <span style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: '14px', color: '#0f172a', letterSpacing: '-0.01em' }}>
+            PUSAKA
           </span>
           <span style={{ fontSize: '9px', color: '#64748b', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '1px' }}>
             Smart Village

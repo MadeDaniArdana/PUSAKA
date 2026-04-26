@@ -178,7 +178,7 @@ export default function OverviewPage() {
                 <span style={{ fontSize: '11px', color: '#16a34a', fontWeight: 600, background: '#f0fdf4', padding: '2px 8px', borderRadius: '10px' }}>Baru</span>
               </div>
               <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '12px', marginBottom: '8px' }}>
-                <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#334155', fontWeight: 500 }}>Selamat datang di GriyaSync!</p>
+                <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#334155', fontWeight: 500 }}>Selamat datang di PUSAKA!</p>
                 <p style={{ margin: 0, fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Portal cerdas desa telah aktif. Anda kini dapat melaporkan infrastruktur dan mengajukan surat digital.</p>
               </div>
             </div>

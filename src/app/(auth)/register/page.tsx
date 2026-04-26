@@ -60,12 +60,10 @@ export default function RegisterPage() {
         <div style={{ position: 'absolute', top: -100, right: -100, width: 300, height: 300, borderRadius: '50%', background: 'rgba(22,163,74,0.1)' }} />
         <div style={{ position: 'absolute', bottom: -50, left: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(59,130,246,0.1)' }} />
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'auto', zIndex: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: '8px', background: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShieldCheck size={18} color="white" />
-          </div>
-          <span style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 800, letterSpacing: '0.02em' }}>
-            GriyaSync
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: 'auto', zIndex: 10 }}>
+          <img src="/logo.png" alt="PUSAKA" style={{ width: 48, height: 48, objectFit: 'contain', filter: 'drop-shadow(3px 8px 10px rgba(0,0,0,0.4)) drop-shadow(0px 3px 4px rgba(0,0,0,0.2))' }} />
+          <span style={{ fontFamily: 'Outfit', fontSize: '26px', fontWeight: 800, letterSpacing: '0.02em' }}>
+            PUSAKA
           </span>
         </div>
 
@@ -89,7 +87,7 @@ export default function RegisterPage() {
               Buat Akun Warga
             </h2>
             <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
-              Daftarkan diri Anda untuk mengakses portal GriyaSync.
+              Daftarkan diri Anda untuk mengakses portal PUSAKA.
             </p>
           </div>
 
