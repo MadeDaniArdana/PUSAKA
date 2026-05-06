@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { AlertTriangle, MapPin, Clock, ChevronRight, Layers } from 'lucide-react';
+import { AlertTriangle, MapPin, Clock, ChevronRight, Layers, ChevronUp, ChevronDown, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 const MapPicker = dynamic(() => import('@/components/MapPicker'), { ssr: false });
@@ -24,7 +24,8 @@ const statusColorMap: Record<string, string> = {
 export default function CommandCenterPage() {
   const [activeCategories, setActiveCategories] = useState<string[]>(['Sampah / Limbah', 'Infrastruktur', 'Penghijauan', 'Air / Drainase', 'Keamanan']);
   const [activeStatuses, setActiveStatuses] = useState<string[]>(['Menunggu', 'Diproses', 'Selesai']);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showMobileList, setShowMobileList] = useState(false);
   const [reports, setReports] = useState<any[]>([]);
 
   useEffect(() => {
@@ -77,15 +78,10 @@ export default function CommandCenterPage() {
       </div>
 
       {/* Top bar */}
-      <div style={{
-        position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)',
-        background: 'white', borderRadius: '12px', padding: '8px 16px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', gap: '8px',
-        zIndex: 500, fontSize: '13px', fontWeight: 700, color: '#0f172a', fontFamily: 'Outfit',
-      }}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', animation: 'pulse 2s infinite' }} />
-        Pusat Komando — Langsung
-        <span style={{ fontSize: '11px', fontWeight: 500, color: '#94a3b8', marginLeft: '4px' }}>
+      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] bg-white rounded-xl px-3 py-2 md:px-4 md:py-2 shadow-lg flex items-center gap-2 text-xs md:text-[13px] font-bold text-slate-900 font-outfit max-w-[calc(100%-100px)] md:max-w-none">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+        <span className="truncate">Pusat Komando — Langsung</span>
+        <span className="text-[10px] md:text-[11px] font-medium text-slate-400 ml-1 hidden sm:inline">
           {highPriorityIssues.length} masalah prioritas
         </span>
       </div>
@@ -93,99 +89,158 @@ export default function CommandCenterPage() {
       {/* Filter toggle button */}
       <button
         onClick={() => setShowFilters(!showFilters)}
-        style={{
-          position: 'absolute', top: 16, left: 16, zIndex: 500,
-          background: 'white', border: 'none', borderRadius: '10px', padding: '8px 12px',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.12)', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: '6px',
-          fontSize: '12px', fontWeight: 600, color: '#475569',
-        }}
+        className="absolute top-3 left-3 z-[500] bg-white border-none rounded-[10px] px-3 py-2 shadow-md cursor-pointer flex items-center gap-1.5 text-xs font-semibold text-slate-600"
       >
         <Layers size={14} /> Filter
       </button>
 
       {/* Left Filter Panel */}
       {showFilters && (
-        <div style={{
-          position: 'absolute', top: 58, left: 16, zIndex: 500, width: '220px',
-          background: 'white', borderRadius: '16px', padding: '16px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-        }}
-          className="animate-fade-in"
-        >
-          <h3 style={{ fontFamily: 'Outfit', fontSize: '13px', fontWeight: 700, color: '#0f172a', margin: '0 0 12px' }}>
-            Filter Laporan
-          </h3>
-          <p style={{ fontSize: '10px', color: '#94a3b8', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
-            Kustomisasi tampilan peta
-          </p>
-
-          <div style={{ marginBottom: '14px' }}>
-            <p style={{ fontSize: '11px', color: '#0f172a', fontWeight: 600, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              KATEGORI
+        <>
+          {/* Mobile overlay backdrop */}
+          <div className="fixed inset-0 bg-black/20 z-[499] md:hidden" onClick={() => setShowFilters(false)} />
+          <div
+            className="fixed inset-x-4 bottom-4 md:absolute md:top-[58px] md:left-4 md:bottom-auto md:right-auto z-[500] w-auto md:w-[220px] bg-white rounded-2xl p-4 shadow-xl animate-fade-in"
+          >
+            <div className="flex items-center justify-between md:hidden mb-3">
+              <h3 className="font-outfit text-sm font-bold text-slate-900">Filter Laporan</h3>
+              <button onClick={() => setShowFilters(false)} className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
+                <X size={14} />
+              </button>
+            </div>
+            <h3 className="hidden md:block font-outfit text-[13px] font-bold text-slate-900 mb-3">
+              Filter Laporan
+            </h3>
+            <p className="text-[10px] text-slate-400 mb-2.5 uppercase tracking-wider font-semibold">
+              Kustomisasi tampilan peta
             </p>
-            {filterCategories.map(({ id, label, color }) => (
-              <label key={id} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={activeCategories.includes(id)}
-                  onChange={() => toggleCategory(id)}
-                  style={{ accentColor: color, width: 14, height: 14 }}
-                />
-                <div style={{ width: 8, height: 8, borderRadius: '2px', background: color }} />
-                <span style={{ fontSize: '12px', color: '#475569' }}>{label}</span>
-              </label>
-            ))}
+
+            <div className="mb-3.5">
+              <p className="text-[11px] text-slate-900 font-semibold mb-2 uppercase tracking-wide">
+                KATEGORI
+              </p>
+              {filterCategories.map(({ id, label, color }) => (
+                <label key={id} className="flex items-center gap-2 mb-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={activeCategories.includes(id)}
+                    onChange={() => toggleCategory(id)}
+                    style={{ accentColor: color }}
+                    className="w-3.5 h-3.5"
+                  />
+                  <div className="w-2 h-2 rounded-sm" style={{ background: color }} />
+                  <span className="text-xs text-slate-600">{label}</span>
+                </label>
+              ))}
+            </div>
+
+            <div>
+              <p className="text-[11px] text-slate-900 font-semibold mb-2 uppercase tracking-wide">
+                STATUS
+              </p>
+              {filterStatuses.map(({ id, label, count, color }) => (
+                <label key={id} className="flex items-center gap-2 mb-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={activeStatuses.includes(id)}
+                    onChange={() => setActiveStatuses((prev) => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])}
+                    style={{ accentColor: color }}
+                    className="w-3.5 h-3.5"
+                  />
+                  <div className="w-2 h-2 rounded-full" style={{ background: color }} />
+                  <span className="text-xs text-slate-600 flex-1">{label}</span>
+                  <span className="text-[11px] text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">{count}</span>
+                </label>
+              ))}
+            </div>
           </div>
+        </>
+      )}
 
-          <div>
-            <p style={{ fontSize: '11px', color: '#0f172a', fontWeight: 600, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              STATUS
-            </p>
-            {filterStatuses.map(({ id, label, count, color }) => (
-              <label key={id} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={activeStatuses.includes(id)}
-                  onChange={() => setActiveStatuses((prev) => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])}
-                  style={{ accentColor: color, width: 14, height: 14 }}
-                />
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: color }} />
-                <span style={{ fontSize: '12px', color: '#475569', flex: 1 }}>{label}</span>
-                <span style={{ fontSize: '11px', color: '#94a3b8', background: '#f8fafc', padding: '1px 6px', borderRadius: '999px' }}>{count}</span>
-              </label>
-            ))}
+      {/* Mobile: Bottom toggle for reports list */}
+      <button
+        onClick={() => setShowMobileList(!showMobileList)}
+        className="md:hidden absolute bottom-3 left-1/2 -translate-x-1/2 z-[500] bg-white rounded-full px-4 py-2.5 shadow-lg flex items-center gap-2 text-xs font-bold text-slate-700"
+      >
+        <Layers size={14} />
+        {filteredReports.length} Laporan
+        {showMobileList ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+      </button>
+
+      {/* Mobile: Bottom sheet reports list */}
+      {showMobileList && (
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-[500] bg-white rounded-t-3xl shadow-2xl max-h-[60vh] flex flex-col animate-fade-in">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+            <div className="flex items-center gap-2">
+              <Layers size={15} className="text-slate-900" />
+              <span className="font-outfit text-[13px] font-bold text-slate-900">Daftar Laporan</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
+                {filteredReports.length} Total
+              </span>
+              <button onClick={() => setShowMobileList(false)} className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 no-scrollbar">
+            {filteredReports.map((issue) => {
+              const timeText = new Date(issue.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+              const isHighPriority = issue.urgency === 'Darurat' || issue.urgency === 'Mendesak';
+              return (
+                <div
+                  key={issue.id}
+                  className="bg-white rounded-xl p-3.5 shadow-sm border border-slate-100"
+                  style={{ borderColor: isHighPriority ? '#fee2e2' : undefined }}
+                >
+                  <div className="flex items-start justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full" style={{ background: statusColorMap[issue.status] || '#16a34a' }} />
+                      <span className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">{issue.category}</span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <Clock size={10} /> {timeText}
+                    </span>
+                  </div>
+                  <h4 className="text-[13px] font-bold text-slate-900 mb-1 leading-snug">{issue.title}</h4>
+                  <p className="text-xs text-slate-500 mb-2 line-clamp-2 leading-relaxed">{issue.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-slate-400 text-[11px]">
+                      <MapPin size={11} /> {issue.address?.split(',')[0] || 'Lokasi Terlampir'}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {isHighPriority && (
+                        <span className="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px] font-bold">
+                          {issue.urgency}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Right List Panel */}
-      <div style={{
-        position: 'absolute', top: 16, right: 16, bottom: 16, zIndex: 500,
-        width: '290px', display: 'flex', flexDirection: 'column', gap: '8px',
-      }}>
+      {/* Desktop: Right List Panel */}
+      <div className="hidden md:flex absolute top-4 right-4 bottom-4 z-[500] w-[290px] flex-col gap-2">
         {/* Header */}
-        <div style={{
-          background: 'white', borderRadius: '14px', padding: '12px 16px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Layers size={15} color="#0f172a" />
-            <span style={{ fontFamily: 'Outfit', fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+        <div className="bg-white rounded-[14px] px-4 py-3 flex items-center justify-between shadow-md border border-slate-200">
+          <div className="flex items-center gap-1.5">
+            <Layers size={15} className="text-slate-900" />
+            <span className="font-outfit text-[13px] font-bold text-slate-900">
               Daftar Laporan
             </span>
           </div>
-          <span style={{
-            fontSize: '11px', fontWeight: 700, background: '#f1f5f9',
-            color: '#475569', padding: '2px 8px', borderRadius: '999px',
-          }}>
+          <span className="text-[11px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
             {filteredReports.length} Total
           </span>
         </div>
 
         {/* Issue cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', paddingBottom: '16px', scrollbarWidth: 'none' }}>
+        <div className="flex flex-col gap-2 overflow-y-auto pb-4 no-scrollbar">
           {filteredReports.map((issue) => {
             const timeText = new Date(issue.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
             const isHighPriority = issue.urgency === 'Darurat' || issue.urgency === 'Mendesak';
@@ -243,21 +298,18 @@ export default function CommandCenterPage() {
         </div>
 
         {/* Legend */}
-        <div style={{
-          background: 'white', borderRadius: '12px', padding: '10px 14px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.08)', marginTop: 'auto',
-        }}>
-          <p style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div className="bg-white rounded-xl px-3.5 py-2.5 shadow-md mt-auto">
+          <p className="text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
             LEGENDA
           </p>
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="flex gap-3 flex-wrap">
             {[
               { color: '#ef4444', label: 'Menunggu' },
               { color: '#f59e0b', label: 'Diproses' },
               { color: '#22c55e', label: 'Selesai' },
             ].map(({ color, label }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#475569' }}>
-                <div style={{ width: 10, height: 10, borderRadius: '50%', background: color }} />
+              <div key={label} className="flex items-center gap-1 text-[11px] text-slate-600">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
                 {label}
               </div>
             ))}
@@ -266,12 +318,7 @@ export default function CommandCenterPage() {
       </div>
 
       {/* Bottom timestamp */}
-      <div style={{
-        position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
-        background: 'rgba(15,23,42,0.8)', borderRadius: '8px', padding: '6px 14px',
-        zIndex: 500, fontSize: '11px', color: 'rgba(255,255,255,0.8)',
-        display: 'flex', alignItems: 'center', gap: '6px', backdropFilter: 'blur(8px)',
-      }}>
+      <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-[400] bg-slate-900/80 rounded-lg px-3 py-1.5 text-[11px] text-white/80 flex items-center gap-1.5 backdrop-blur-sm hidden md:flex">
         <Clock size={11} />
         Terakhir diperbarui: {new Date().toLocaleTimeString('id-ID')} WIB
       </div>

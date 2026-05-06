@@ -67,177 +67,189 @@ export default function AdminMarketplacePage() {
   );
 
   return (
-    <div style={{ padding: '32px 40px', minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="p-4 md:p-6 lg:p-8 min-h-full flex flex-col">
       
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5 md:mb-6">
         <div>
-          <h1 style={{ fontFamily: 'Outfit', fontSize: '28px', fontWeight: 700, color: '#f8fafc', margin: '0 0 8px' }}>
+          <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-50 m-0 mb-2">
             Direktori UMKM
           </h1>
-          <p style={{ fontSize: '14px', color: '#94a3b8', margin: 0 }}>
+          <p className="text-sm text-slate-400 m-0">
             Kelola daftar usaha lokal warga yang tampil di Marketplace.
           </p>
         </div>
         <button 
           onClick={() => setShowForm(true)}
-          style={{ 
-            background: '#16a34a', border: 'none', padding: '10px 16px', borderRadius: '10px',
-            color: 'white', fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px',
-            cursor: 'pointer', transition: 'background 0.2s', boxShadow: '0 4px 12px rgba(22,163,74,0.3)'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = '#15803d'}
-          onMouseLeave={(e) => e.currentTarget.style.background = '#16a34a'}
+          className="bg-green-600 border-none px-4 py-2.5 rounded-[10px] text-white text-[13px] font-semibold flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-lg shadow-green-600/30 hover:bg-green-700 w-full sm:w-auto"
         >
           <Plus size={16} /> Tambah UMKM
         </button>
       </div>
 
       {/* Toolbar */}
-      <div style={{ 
-        display: 'flex', gap: '16px', marginBottom: '24px', background: 'rgba(30,41,59,0.5)', 
-        padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' 
-      }}>
-        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-          <Search size={16} color="#64748b" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
+      <div className="flex gap-3 md:gap-4 mb-5 md:mb-6 bg-slate-800/50 p-3 md:p-4 rounded-2xl border border-white/5">
+        <div className="relative w-full max-w-[400px]">
+          <Search size={16} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             placeholder="Cari nama toko atau pemilik..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ 
-              width: '100%', padding: '10px 14px 10px 40px', borderRadius: '10px', 
-              background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(255,255,255,0.1)', 
-              color: '#f8fafc', fontSize: '13px', outline: 'none' 
-            }}
+            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
           />
         </div>
       </div>
 
-      {/* Table */}
-      <div style={{ 
-        background: 'rgba(30,41,59,0.5)', border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: '20px', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column'
-      }}>
+      {/* Table / Cards */}
+      <div className="bg-slate-800/50 border border-white/5 rounded-2xl flex-1 overflow-hidden flex flex-col">
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, color: '#94a3b8' }}>Memuat direktori...</div>
+          <div className="flex justify-center items-center flex-1 text-slate-400">Memuat direktori...</div>
         ) : filtered.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, color: '#64748b', gap: '12px', padding: '40px' }}>
-            <AlertCircle size={48} opacity={0.5} />
-            <span style={{ fontSize: '15px' }}>Tidak ada UMKM terdaftar</span>
+          <div className="flex flex-col items-center justify-center flex-1 text-slate-500 gap-3 p-10">
+            <AlertCircle size={48} className="opacity-50" />
+            <span className="text-[15px]">Tidak ada UMKM terdaftar</span>
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>INFO UMKM</th>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>KATEGORI</th>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>KONTAK PEMILIK</th>
-                  <th style={{ textAlign: 'right', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>AKSI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((biz) => (
-                  <tr key={biz.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    <td style={{ padding: '16px 20px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        {biz.image_url ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={biz.image_url} alt="" style={{ width: 48, height: 48, borderRadius: '8px', objectFit: 'cover' }} />
-                        ) : (
-                          <div style={{ width: 48, height: 48, borderRadius: '8px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Store size={20} color="#64748b" />
-                          </div>
-                        )}
-                        <div>
-                          <p style={{ fontSize: '14px', fontWeight: 600, color: '#f8fafc', margin: '0 0 4px' }}>{biz.name}</p>
-                          <p style={{ fontSize: '12px', color: '#64748b', margin: 0, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{biz.description}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td style={{ padding: '16px 20px' }}>
-                      <span style={{ 
-                        background: 'rgba(255,255,255,0.05)', padding: '6px 10px', borderRadius: '6px', 
-                        fontSize: '11px', fontWeight: 600, color: '#cbd5e1' 
-                      }}>
-                        {biz.category}
-                      </span>
-                    </td>
-                    <td style={{ padding: '16px 20px' }}>
-                      <p style={{ fontSize: '13px', color: '#e2e8f0', margin: '0 0 4px', fontWeight: 500 }}>{biz.owner_name}</p>
-                      <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0, fontFamily: 'monospace' }}>{biz.phone_number}</p>
-                    </td>
-                    <td style={{ padding: '16px 20px', textAlign: 'right' }}>
-                      <button 
-                        onClick={() => handleDelete(biz.id, biz.name)}
-                        style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '8px', borderRadius: '8px', transition: 'background 0.2s' }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                        title="Hapus UMKM"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </td>
+          <>
+            {/* Desktop table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-white/[0.02]">
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">INFO UMKM</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">KATEGORI</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">KONTAK PEMILIK</th>
+                    <th className="text-right p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">AKSI</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filtered.map((biz) => (
+                    <tr key={biz.id} className="border-b border-white/[0.04]">
+                      <td className="p-4 px-5">
+                        <div className="flex items-center gap-3">
+                          {biz.image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={biz.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                          ) : (
+                            <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
+                              <Store size={20} className="text-slate-500" />
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-sm font-semibold text-slate-50 m-0 mb-1">{biz.name}</p>
+                            <p className="text-xs text-slate-500 m-0 line-clamp-1">{biz.description}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 px-5">
+                        <span className="bg-white/5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold text-slate-300">
+                          {biz.category}
+                        </span>
+                      </td>
+                      <td className="p-4 px-5">
+                        <p className="text-[13px] text-slate-200 m-0 mb-1 font-medium">{biz.owner_name}</p>
+                        <p className="text-xs text-slate-400 m-0 font-mono">{biz.phone_number}</p>
+                      </td>
+                      <td className="p-4 px-5 text-right">
+                        <button 
+                          onClick={() => handleDelete(biz.id, biz.name)}
+                          className="bg-transparent border-none text-red-500 cursor-pointer p-2 rounded-lg transition-colors hover:bg-red-500/10"
+                          title="Hapus UMKM"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile card view */}
+            <div className="md:hidden flex flex-col gap-3 p-3 overflow-y-auto">
+              {filtered.map((biz) => (
+                <div key={biz.id} className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                  <div className="flex gap-3 mb-3">
+                    {biz.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={biz.image_url} alt="" className="w-12 h-12 rounded-lg object-cover shrink-0" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+                        <Store size={18} className="text-slate-500" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-semibold text-slate-50 m-0 mb-0.5 truncate">{biz.name}</p>
+                      <span className="inline-block bg-white/5 px-2 py-0.5 rounded text-[10px] font-semibold text-slate-300">{biz.category}</span>
+                    </div>
+                    <button 
+                      onClick={() => handleDelete(biz.id, biz.name)}
+                      className="bg-transparent border-none text-red-500 cursor-pointer p-1.5 rounded-lg hover:bg-red-500/10 shrink-0 self-start"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-400 m-0 mb-1">{biz.owner_name} • <span className="font-mono">{biz.phone_number}</span></p>
+                  <p className="text-[11px] text-slate-500 m-0 line-clamp-1">{biz.description}</p>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
       {/* Modal Tambah UMKM */}
       {showForm && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
-          <div style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '24px', width: '100%', maxWidth: '500px', boxShadow: '0 24px 64px rgba(0,0,0,0.5)' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 style={{ fontFamily: 'Outfit', fontSize: '18px', fontWeight: 600, color: '#f8fafc', margin: 0 }}>Registrasi UMKM Baru</h2>
-              <button onClick={() => setShowForm(false)} style={{ background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer' }}><X size={20} /></button>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[1000] p-4 md:p-5">
+          <div className="bg-slate-900 border border-white/10 rounded-3xl w-full max-w-[500px] shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-5 md:p-6 border-b border-white/5 flex justify-between items-center sticky top-0 bg-slate-900 z-10 rounded-t-3xl">
+              <h2 className="font-outfit text-lg font-semibold text-slate-50 m-0">Registrasi UMKM Baru</h2>
+              <button onClick={() => setShowForm(false)} className="bg-transparent border-none text-slate-500 cursor-pointer"><X size={20} /></button>
             </div>
             
-            <form onSubmit={handleAddSubmit} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <form onSubmit={handleAddSubmit} className="p-5 md:p-6 flex flex-col gap-4">
               <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>NAMA USAHA</label>
-                <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none' }} placeholder="Contoh: Kedai Mak Nyus" />
+                <label className="text-xs font-semibold text-slate-400 block mb-1.5">NAMA USAHA</label>
+                <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="Contoh: Kedai Mak Nyus" />
               </div>
 
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>KATEGORI</label>
-                  <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none' }}>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <label className="text-xs font-semibold text-slate-400 block mb-1.5">KATEGORI</label>
+                  <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none">
                     <option value="Kuliner" style={{ background: '#0f172a' }}>Kuliner</option>
                     <option value="Jasa" style={{ background: '#0f172a' }}>Jasa</option>
                     <option value="Produk Lokal" style={{ background: '#0f172a' }}>Produk Lokal</option>
                   </select>
                 </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>NOMOR WA (TANPA 0)</label>
-                  <input required type="text" value={formData.phone_number} onChange={e => setFormData({...formData, phone_number: e.target.value})} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none' }} placeholder="812345678" />
+                <div className="flex-1">
+                  <label className="text-xs font-semibold text-slate-400 block mb-1.5">NOMOR WA (TANPA 0)</label>
+                  <input required type="text" value={formData.phone_number} onChange={e => setFormData({...formData, phone_number: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="812345678" />
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>NAMA PEMILIK</label>
-                <input required type="text" value={formData.owner_name} onChange={e => setFormData({...formData, owner_name: e.target.value})} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none' }} placeholder="Nama lengkap" />
+                <label className="text-xs font-semibold text-slate-400 block mb-1.5">NAMA PEMILIK</label>
+                <input required type="text" value={formData.owner_name} onChange={e => setFormData({...formData, owner_name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="Nama lengkap" />
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>DESKRIPSI (Opsional)</label>
-                <textarea rows={2} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none', resize: 'none' }} placeholder="Jelaskan produk/jasa yang dijual..." />
+                <label className="text-xs font-semibold text-slate-400 block mb-1.5">DESKRIPSI (Opsional)</label>
+                <textarea rows={2} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none resize-none" placeholder="Jelaskan produk/jasa yang dijual..." />
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>URL GAMBAR (Opsional)</label>
-                <div style={{ position: 'relative' }}>
-                  <ImageIcon size={14} color="#64748b" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
-                  <input type="url" value={formData.image_url} onChange={e => setFormData({...formData, image_url: e.target.value})} style={{ width: '100%', padding: '10px 14px 10px 36px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '13px', outline: 'none' }} placeholder="https://..." />
+                <label className="text-xs font-semibold text-slate-400 block mb-1.5">URL GAMBAR (Opsional)</label>
+                <div className="relative">
+                  <ImageIcon size={14} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input type="url" value={formData.image_url} onChange={e => setFormData({...formData, image_url: e.target.value})} className="w-full py-2.5 px-3.5 pl-9 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="https://..." />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                <button type="button" onClick={() => setShowForm(false)} style={{ flex: 1, padding: '12px', borderRadius: '10px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>Batal</button>
-                <button type="submit" disabled={isSubmitting} style={{ flex: 1, padding: '12px', borderRadius: '10px', background: '#16a34a', border: 'none', color: 'white', fontSize: '13px', fontWeight: 600, cursor: isSubmitting ? 'not-allowed' : 'pointer', opacity: isSubmitting ? 0.7 : 1 }}>
+              <div className="flex gap-3 mt-2">
+                <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-3 rounded-[10px] bg-transparent border border-white/10 text-slate-300 text-[13px] font-semibold cursor-pointer">Batal</button>
+                <button type="submit" disabled={isSubmitting} className="flex-1 py-3 rounded-[10px] bg-green-600 border-none text-white text-[13px] font-semibold cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
                   {isSubmitting ? 'Menyimpan...' : 'Simpan UMKM'}
                 </button>
               </div>

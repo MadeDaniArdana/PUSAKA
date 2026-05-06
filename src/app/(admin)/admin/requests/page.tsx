@@ -107,48 +107,36 @@ export default function AdminRequestsPage() {
   });
 
   return (
-    <div style={{ padding: '32px 40px', minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="p-4 md:p-6 lg:p-8 min-h-full flex flex-col">
       
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <div>
-          <h1 style={{ fontFamily: 'Outfit', fontSize: '28px', fontWeight: 700, color: '#f8fafc', margin: '0 0 8px' }}>
-            Manajemen Permohonan Surat
-          </h1>
-          <p style={{ fontSize: '14px', color: '#94a3b8', margin: 0 }}>
-            Proses pengajuan dokumen administrasi digital warga.
-          </p>
-        </div>
+      <div className="mb-5 md:mb-6">
+        <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-50 m-0 mb-2">
+          Manajemen Permohonan Surat
+        </h1>
+        <p className="text-sm text-slate-400 m-0">
+          Proses pengajuan dokumen administrasi digital warga.
+        </p>
       </div>
 
       {/* Toolbar */}
-      <div style={{ 
-        display: 'flex', gap: '16px', marginBottom: '24px', background: 'rgba(30,41,59,0.5)', 
-        padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)' 
-      }}>
-        <div style={{ position: 'relative', flex: 1 }}>
-          <Search size={16} color="#64748b" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
+      <div className="flex flex-col sm:flex-row gap-3 mb-5 md:mb-6 bg-slate-800/50 p-3 md:p-4 rounded-2xl border border-white/5">
+        <div className="relative flex-1">
+          <Search size={16} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             placeholder="Cari nama pemohon, NIK, atau jenis surat..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ 
-              width: '100%', padding: '10px 14px 10px 40px', borderRadius: '10px', 
-              background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(255,255,255,0.1)', 
-              color: '#f8fafc', fontSize: '13px', outline: 'none' 
-            }}
+            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
           />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Filter size={16} color="#94a3b8" />
+        <div className="flex items-center gap-2">
+          <Filter size={16} className="text-slate-400" />
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            style={{ 
-              padding: '10px 14px', borderRadius: '10px', background: 'rgba(15,23,42,0.6)', 
-              border: '1px solid rgba(255,255,255,0.1)', color: '#f8fafc', fontSize: '13px', outline: 'none' 
-            }}
+            className="py-2.5 px-3.5 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
           >
             <option value="Semua">Semua Status</option>
             <option value="Menunggu">Menunggu</option>
@@ -159,170 +147,191 @@ export default function AdminRequestsPage() {
         </div>
       </div>
 
-      {/* Table */}
-      <div style={{ 
-        background: 'rgba(30,41,59,0.5)', border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: '20px', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column'
-      }}>
+      {/* Table / Cards */}
+      <div className="bg-slate-800/50 border border-white/5 rounded-2xl flex-1 overflow-hidden flex flex-col">
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, color: '#94a3b8' }}>
+          <div className="flex justify-center items-center flex-1 text-slate-400">
             Memuat permohonan...
           </div>
         ) : filteredRequests.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, color: '#64748b', gap: '12px', padding: '40px' }}>
-            <AlertCircle size={48} opacity={0.5} />
-            <span style={{ fontSize: '15px' }}>Tidak ada permohonan yang ditemukan</span>
+          <div className="flex flex-col items-center justify-center flex-1 text-slate-500 gap-3 p-10">
+            <AlertCircle size={48} className="opacity-50" />
+            <span className="text-[15px]">Tidak ada permohonan yang ditemukan</span>
           </div>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>JENIS DOKUMEN</th>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>DATA PEMOHON</th>
-                  <th style={{ textAlign: 'left', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)', width: '25%' }}>KEPERLUAN</th>
-                  <th style={{ textAlign: 'right', padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>AKSI / STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRequests.map((req) => (
-                  <tr key={req.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    
-                    {/* Jenis Dokumen */}
-                    <td style={{ padding: '20px', verticalAlign: 'top' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '10px', background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <FileCheck size={18} color="#60a5fa" />
-                        </div>
-                        <div>
-                          <p style={{ fontSize: '14px', fontWeight: 600, color: '#f8fafc', margin: '0 0 4px', textTransform: 'capitalize' }}>
-                            {req.type?.replace(/-/g, ' ') || 'Dokumen'}
-                          </p>
-                          <p style={{ fontSize: '11px', color: '#64748b', margin: 0 }}>
-                            {new Date(req.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    
-                    {/* Data Pemohon */}
-                    <td style={{ padding: '20px', verticalAlign: 'top' }}>
-                      <p style={{ fontSize: '14px', fontWeight: 600, color: '#e2e8f0', margin: '0 0 4px' }}>{req.requester_name}</p>
-                      <div style={{ display: 'flex', gap: '12px' }}>
-                        <p style={{ fontSize: '11px', color: '#94a3b8', margin: 0 }}>No. Resi: <span style={{ color: '#cbd5e1', fontFamily: 'monospace' }}>{req.tracking_number}</span></p>
-                      </div>
-                    </td>
-
-                    {/* Keperluan */}
-                    <td style={{ padding: '20px', verticalAlign: 'top' }}>
-                      <p style={{ fontSize: '13px', color: '#cbd5e1', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                        Pengajuan layanan administrasi digital
-                      </p>
-                    </td>
-                    
-                    {/* Aksi / Status */}
-                    <td style={{ padding: '20px', verticalAlign: 'top', textAlign: 'right' }}>
-                      {req.status === 'Menunggu' ? (
-                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                          <button 
-                            onClick={() => handleUpdateStatus(req.id, 'Ditolak')}
-                            style={{ 
-                              background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444',
-                              padding: '8px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                              display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(239,68,68,0.2)' }}
-                            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)' }}
-                          >
-                            <XCircle size={14} /> Tolak
-                          </button>
-                          <button 
-                            onClick={() => handleUpdateStatus(req.id, 'Disetujui')}
-                            style={{ 
-                              background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981',
-                              padding: '8px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                              display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(16,185,129,0.2)' }}
-                            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(16,185,129,0.1)' }}
-                          >
-                            <CheckCircle2 size={14} /> Setujui
-                          </button>
-                        </div>
-                      ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                          <span style={{ 
-                            display: 'inline-block', padding: '6px 12px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase',
-                            background: req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
-                            color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#34d399' : '#f87171',
-                            border: `1px solid ${req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}`
-                          }}>
-                            {req.status}
-                          </span>
-                          {(req.status === 'Disetujui') && (
-                            <button 
-                              onClick={() => openUploadModal(req)}
-                              style={{ 
-                                background: 'transparent', border: 'none', color: '#60a5fa', fontSize: '11px', 
-                                fontWeight: 600, cursor: 'pointer', textDecoration: 'underline'
-                              }}
-                            >
-                              Tandai Selesai & Kirim
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </td>
+          <>
+            {/* Desktop table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-white/[0.02]">
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">JENIS DOKUMEN</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">DATA PEMOHON</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5 w-[25%]">KEPERLUAN</th>
+                    <th className="text-right p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">AKSI / STATUS</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filteredRequests.map((req) => (
+                    <tr key={req.id} className="border-b border-white/[0.04]">
+                      <td className="p-5 align-top">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-10 h-10 rounded-[10px] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                            <FileCheck size={18} className="text-blue-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-50 m-0 mb-1 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
+                            <p className="text-[11px] text-slate-500 m-0">
+                              {new Date(req.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-5 align-top">
+                        <p className="text-sm font-semibold text-slate-200 m-0 mb-1">{req.requester_name}</p>
+                        <p className="text-[11px] text-slate-400 m-0">No. Resi: <span className="text-slate-300 font-mono">{req.tracking_number}</span></p>
+                      </td>
+                      <td className="p-5 align-top">
+                        <p className="text-[13px] text-slate-300 m-0 leading-relaxed line-clamp-2">
+                          Pengajuan layanan administrasi digital
+                        </p>
+                      </td>
+                      <td className="p-5 align-top text-right">
+                        {req.status === 'Menunggu' ? (
+                          <div className="flex gap-2 justify-end">
+                            <button 
+                              onClick={() => handleUpdateStatus(req.id, 'Ditolak')}
+                              className="bg-red-500/10 border border-red-500/20 text-red-500 px-3 py-2 rounded-lg text-xs font-semibold cursor-pointer flex items-center gap-1.5 transition-colors hover:bg-red-500/20"
+                            >
+                              <XCircle size={14} /> Tolak
+                            </button>
+                            <button 
+                              onClick={() => handleUpdateStatus(req.id, 'Disetujui')}
+                              className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-3 py-2 rounded-lg text-xs font-semibold cursor-pointer flex items-center gap-1.5 transition-colors hover:bg-emerald-500/20"
+                            >
+                              <CheckCircle2 size={14} /> Setujui
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-end gap-2">
+                            <span className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold uppercase" style={{
+                              background: req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
+                              color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#34d399' : '#f87171',
+                              border: `1px solid ${req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}`
+                            }}>
+                              {req.status}
+                            </span>
+                            {(req.status === 'Disetujui') && (
+                              <button 
+                                onClick={() => openUploadModal(req)}
+                                className="bg-transparent border-none text-blue-400 text-[11px] font-semibold cursor-pointer underline"
+                              >
+                                Tandai Selesai & Kirim
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile card view */}
+            <div className="md:hidden flex flex-col gap-3 p-3 overflow-y-auto">
+              {filteredRequests.map((req) => (
+                <div key={req.id} className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-[10px] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                      <FileCheck size={16} className="text-blue-400" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-semibold text-slate-50 m-0 mb-0.5 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
+                      <p className="text-[11px] text-slate-400 m-0">{req.requester_name} • <span className="font-mono">{req.tracking_number}</span></p>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-slate-500 m-0 mb-3">
+                    {new Date(req.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                  
+                  {req.status === 'Menunggu' ? (
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => handleUpdateStatus(req.id, 'Ditolak')}
+                        className="flex-1 bg-red-500/10 border border-red-500/20 text-red-500 py-2 rounded-lg text-[11px] font-semibold cursor-pointer flex items-center justify-center gap-1 transition-colors hover:bg-red-500/20"
+                      >
+                        <XCircle size={13} /> Tolak
+                      </button>
+                      <button 
+                        onClick={() => handleUpdateStatus(req.id, 'Disetujui')}
+                        className="flex-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 py-2 rounded-lg text-[11px] font-semibold cursor-pointer flex items-center justify-center gap-1 transition-colors hover:bg-emerald-500/20"
+                      >
+                        <CheckCircle2 size={13} /> Setujui
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase" style={{
+                        background: req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
+                        color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#34d399' : '#f87171',
+                      }}>
+                        {req.status}
+                      </span>
+                      {(req.status === 'Disetujui') && (
+                        <button 
+                          onClick={() => openUploadModal(req)}
+                          className="bg-transparent border-none text-blue-400 text-[11px] font-semibold cursor-pointer underline"
+                        >
+                          Selesai & Kirim
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: '#1e293b', borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '480px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-              <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: 'white', margin: 0 }}>Unggah Dokumen Final</h2>
-              <button onClick={closeUploadModal} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+        <div className="fixed inset-0 bg-slate-900/80 z-[1000] flex items-center justify-center p-4 md:p-5">
+          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 w-full max-w-[480px] shadow-2xl border border-white/10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-outfit text-lg md:text-xl font-bold text-white m-0">Unggah Dokumen Final</h2>
+              <button onClick={closeUploadModal} className="bg-transparent border-none text-slate-400 cursor-pointer">
                 <X size={20} />
               </button>
             </div>
             
-            <div style={{ marginBottom: '24px' }}>
-              <p style={{ fontSize: '14px', color: '#cbd5e1', marginBottom: '16px', lineHeight: 1.5 }}>
-                Unggah file dokumen surat (PDF) untuk pemohon <strong style={{ color: 'white' }}>{selectedRequestForUpload?.requester_name}</strong>. Setelah diunggah, pemohon dapat mengunduhnya langsung dari dashboard mereka.
+            <div className="mb-6">
+              <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                Unggah file dokumen surat (PDF) untuk pemohon <strong className="text-white">{selectedRequestForUpload?.requester_name}</strong>. Setelah diunggah, pemohon dapat mengunduhnya langsung dari dashboard mereka.
               </p>
               
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                style={{ 
-                  border: '2px dashed rgba(255,255,255,0.2)', borderRadius: '16px', padding: '32px', 
-                  textAlign: 'center', cursor: 'pointer', background: 'rgba(15,23,42,0.4)', transition: 'border 0.2s'
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)' }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
+                className="border-2 border-dashed border-white/20 rounded-2xl p-6 md:p-8 text-center cursor-pointer bg-slate-900/40 transition-colors hover:border-white/40"
               >
-                <Upload size={32} color="#64748b" style={{ margin: '0 auto 12px' }} />
-                <p style={{ margin: 0, fontSize: '14px', color: '#f8fafc', fontWeight: 600 }}>
+                <Upload size={32} className="text-slate-500 mx-auto mb-3" />
+                <p className="m-0 text-sm text-slate-50 font-semibold">
                   {fileToUpload ? fileToUpload.name : 'Pilih File Dokumen (PDF)'}
                 </p>
-                <p style={{ margin: '8px 0 0', fontSize: '12px', color: '#64748b' }}>Maksimal 5MB</p>
+                <p className="m-0 mt-2 text-xs text-slate-500">Maksimal 5MB</p>
               </div>
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept=".pdf,.doc,.docx" />
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".pdf,.doc,.docx" />
             </div>
 
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={closeUploadModal} style={{ flex: 1, padding: '12px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#f8fafc', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
+            <div className="flex gap-3">
+              <button onClick={closeUploadModal} className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-50 text-sm font-semibold cursor-pointer">
                 Batal
               </button>
               <button 
                 onClick={handleUploadAndComplete} 
                 disabled={!fileToUpload || isUploading}
-                style={{ flex: 2, padding: '12px', borderRadius: '12px', background: '#3b82f6', border: 'none', color: 'white', fontSize: '14px', fontWeight: 600, cursor: (!fileToUpload || isUploading) ? 'not-allowed' : 'pointer', opacity: (!fileToUpload || isUploading) ? 0.7 : 1 }}
+                className="flex-[2] py-3 rounded-xl bg-blue-600 border-none text-white text-sm font-semibold cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isUploading ? 'Mengunggah...' : 'Unggah & Selesai'}
               </button>

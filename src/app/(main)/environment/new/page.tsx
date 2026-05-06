@@ -26,97 +26,57 @@ const urgencyOptions = ['Normal', 'Mendesak', 'Darurat'];
 // ─── Login Wall — shown when user is not authenticated ───────────────────────
 function LoginWall() {
   return (
-    <div style={{
-      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#f8fafc', padding: '40px',
-    }}>
-      <div style={{
-        maxWidth: '440px', width: '100%', textAlign: 'center',
-        background: 'white', borderRadius: '24px', padding: '40px 36px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.08)', border: '1px solid #f1f5f9',
-      }}>
+    <div className="flex-1 flex items-center justify-center bg-slate-50 p-6 md:p-10">
+      <div className="max-w-[440px] w-full text-center bg-white rounded-3xl p-6 md:p-10 shadow-lg border border-slate-100">
         {/* Icon */}
-        <div style={{
-          width: 72, height: 72, borderRadius: '20px',
-          background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
-          border: '1px solid #bbf7d0',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 20px',
-        }}>
-          <User size={32} color="#16a34a" />
+        <div className="w-16 h-16 md:w-[72px] md:h-[72px] rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center mx-auto mb-5">
+          <User size={32} className="text-green-600" />
         </div>
 
-        <h1 style={{
-          fontFamily: 'Outfit', fontSize: '22px', fontWeight: 700,
-          color: '#0f172a', margin: '0 0 8px',
-        }}>
+        <h1 className="font-outfit text-lg md:text-[22px] font-bold text-slate-900 mb-2">
           Login untuk Buat Laporan
         </h1>
-        <p style={{
-          fontSize: '14px', color: '#64748b', lineHeight: 1.7,
-          margin: '0 0 8px',
-        }}>
+        <p className="text-sm text-slate-500 leading-relaxed mb-2">
           Untuk mengirimkan laporan infrastruktur atau lingkungan, Anda perlu masuk terlebih dahulu.
         </p>
-        <p style={{ fontSize: '13px', color: '#94a3b8', margin: '0 0 28px' }}>
-          Tidak perlu login untuk <strong style={{ color: '#16a34a' }}>melihat laporan</strong> yang sudah ada.
+        <p className="text-[13px] text-slate-400 mb-6 md:mb-7">
+          Tidak perlu login untuk <strong className="text-green-600">melihat laporan</strong> yang sudah ada.
         </p>
 
         {/* Decorative steps */}
-        <div style={{
-          display: 'flex', gap: '8px', marginBottom: '28px', textAlign: 'left',
-        }}>
+        <div className="flex flex-col sm:flex-row gap-2 mb-6 md:mb-7 text-left">
           {[
             { num: '1', text: 'Masuk atau daftar akun gratis' },
             { num: '2', text: 'Isi detail laporan & lokasi' },
             { num: '3', text: 'Laporan diterima warga & admin' },
           ].map(({ num, text }) => (
-            <div key={num} style={{
-              flex: 1, background: '#f8fafc', borderRadius: '12px',
-              padding: '12px 10px', textAlign: 'center',
-              border: '1px solid #f1f5f9',
-            }}>
-              <div style={{
-                width: 24, height: 24, borderRadius: '50%',
-                background: '#16a34a', color: 'white',
-                fontSize: '11px', fontWeight: 700,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 6px',
-              }}>{num}</div>
-              <p style={{ fontSize: '11px', color: '#475569', margin: 0, lineHeight: 1.4 }}>{text}</p>
+            <div key={num} className="flex-1 bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+              <div className="w-6 h-6 rounded-full bg-green-600 text-white text-[11px] font-bold flex items-center justify-center mx-auto mb-1.5">
+                {num}
+              </div>
+              <p className="text-[11px] text-slate-600 leading-snug">{text}</p>
             </div>
           ))}
         </div>
 
         {/* CTAs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="flex flex-col gap-2.5">
           <Link
             href="/login?redirect=/environment/new"
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              padding: '14px', borderRadius: '12px',
-              background: 'linear-gradient(135deg, #16a34a, #15803d)',
-              color: 'white', fontSize: '14px', fontWeight: 700, textDecoration: 'none',
-              boxShadow: '0 4px 16px rgba(22,163,74,0.3)',
-            }}
+            className="flex items-center justify-center gap-2 p-3.5 rounded-xl bg-gradient-to-br from-green-600 to-green-700 text-white text-sm font-bold no-underline shadow-lg shadow-green-600/30"
           >
             <LogIn size={16} />
             Masuk Sekarang
           </Link>
           <Link
             href="/register"
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: '14px', borderRadius: '12px',
-              border: '1.5px solid #e2e8f0', background: 'white',
-              color: '#0f172a', fontSize: '14px', fontWeight: 600, textDecoration: 'none',
-            }}
+            className="flex items-center justify-center p-3.5 rounded-xl border-[1.5px] border-slate-200 bg-white text-slate-900 text-sm font-semibold no-underline"
           >
             Daftar Akun Baru
           </Link>
           <Link
             href="/environment"
-            style={{ fontSize: '13px', color: '#94a3b8', textDecoration: 'none', padding: '6px' }}
+            className="text-[13px] text-slate-400 no-underline p-1.5"
           >
             ← Lihat laporan yang ada
           </Link>
@@ -238,20 +198,10 @@ export default function NewReportPage() {
   // Loading skeleton
   if (loading) {
     return (
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: '#f8fafc',
-      }}>
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', color: '#94a3b8',
-        }}>
-          <div style={{
-            width: 40, height: 40, border: '3px solid #e2e8f0',
-            borderTopColor: '#16a34a', borderRadius: '50%',
-            animation: 'spin 0.8s linear infinite',
-          }} />
-          <style dangerouslySetInnerHTML={{ __html: '@keyframes spin { to { transform: rotate(360deg); } }' }} />
-          <span style={{ fontSize: '14px' }}>Memeriksa akun...</span>
+      <div className="flex-1 flex items-center justify-center bg-slate-50">
+        <div className="flex flex-col items-center gap-3 text-slate-400">
+          <div className="w-10 h-10 border-3 border-slate-200 border-t-green-600 rounded-full animate-spin" />
+          <span className="text-sm">Memeriksa akun...</span>
         </div>
       </div>
     );
@@ -264,29 +214,25 @@ export default function NewReportPage() {
 
   // Authenticated — show form
   return (
-    <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
+    <div className="flex flex-col md:flex-row h-full overflow-hidden">
       {/* Left Panel - Form */}
-      <div style={{
-        width: '340px', flexShrink: 0, background: 'white',
-        borderRight: '1px solid #e2e8f0', display: 'flex',
-        flexDirection: 'column', overflow: 'hidden',
-      }}>
+      <div className="w-full md:w-[340px] shrink-0 bg-white md:border-r border-b md:border-b-0 border-slate-200 flex flex-col overflow-hidden">
         {/* Header */}
-        <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid #f1f5f9' }}>
-          <h1 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+        <div className="p-4 md:p-5 md:pb-4 border-b border-slate-100">
+          <h1 className="font-outfit text-lg md:text-xl font-bold text-slate-900 m-0">
             Buat Laporan Baru
           </h1>
-          <p style={{ fontSize: '13px', color: '#94a3b8', margin: '4px 0 0' }}>
+          <p className="text-[13px] text-slate-400 mt-1">
             Bantu jaga lingkungan kita tetap bersih dan aman.
           </p>
         </div>
 
         {/* Scrollable form */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
+        <div className="flex-1 overflow-y-auto p-4 md:px-5 md:py-4">
 
           {/* Title */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '6px' }}>
+          <div className="mb-4">
+            <label className="text-xs font-semibold text-slate-600 block mb-1.5">
               JUDUL LAPORAN
             </label>
             <input
@@ -294,38 +240,30 @@ export default function NewReportPage() {
               placeholder="Contoh: Jalan berlubang depan balai desa..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              style={{
-                width: '100%', padding: '10px 12px', borderRadius: '10px',
-                border: '1.5px solid #e2e8f0', fontSize: '13px', color: '#0f172a',
-                outline: 'none', transition: 'border 0.2s', fontFamily: 'Inter',
-              }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = '#16a34a')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
+              className="w-full px-3 py-2.5 rounded-[10px] border-[1.5px] border-slate-200 text-[13px] text-slate-900 outline-none transition-colors focus:border-green-600 font-inter"
             />
           </div>
 
           {/* Category */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '8px' }}>
+          <div className="mb-4">
+            <label className="text-xs font-semibold text-slate-600 block mb-2">
               KATEGORI MASALAH
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div className="grid grid-cols-3 md:grid-cols-2 gap-2">
               {categories.map(({ id, label, icon: Icon, color }) => {
                 const active = selectedCategory === id;
                 return (
                   <button
                     key={id}
                     onClick={() => setSelectedCategory(id)}
+                    className="flex flex-col items-center gap-1.5 p-2.5 md:p-3 rounded-xl border-2 cursor-pointer transition-all"
                     style={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
-                      padding: '12px 8px', borderRadius: '12px',
-                      border: active ? `2px solid ${color}` : '2px solid #e2e8f0',
+                      borderColor: active ? color : '#e2e8f0',
                       background: active ? `${color}14` : 'white',
-                      cursor: 'pointer', transition: 'all 0.15s',
                     }}
                   >
-                    <Icon size={20} style={{ color: active ? color : '#94a3b8' }} />
-                    <span style={{ fontSize: '11px', fontWeight: active ? 600 : 400, color: active ? color : '#94a3b8', textAlign: 'center', lineHeight: 1.2 }}>
+                    <Icon size={18} style={{ color: active ? color : '#94a3b8' }} />
+                    <span className="text-[10px] md:text-[11px] font-medium text-center leading-tight" style={{ color: active ? color : '#94a3b8', fontWeight: active ? 600 : 400 }}>
                       {label}
                     </span>
                   </button>
@@ -335,11 +273,11 @@ export default function NewReportPage() {
           </div>
 
           {/* Urgency */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '8px' }}>
+          <div className="mb-4">
+            <label className="text-xs font-semibold text-slate-600 block mb-2">
               TINGKAT URGENSI
             </label>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div className="flex gap-2">
               {urgencyOptions.map((u) => {
                 const active = urgency === u;
                 const colors: Record<string, string> = { Normal: '#16a34a', Mendesak: '#f59e0b', Darurat: '#ef4444' };
@@ -347,13 +285,12 @@ export default function NewReportPage() {
                   <button
                     key={u}
                     onClick={() => setUrgency(u)}
+                    className="flex-1 py-2 px-1 rounded-lg text-xs cursor-pointer transition-all"
                     style={{
-                      flex: 1, padding: '8px 4px', borderRadius: '8px', fontSize: '12px',
                       fontWeight: active ? 600 : 400,
                       border: active ? `1.5px solid ${colors[u]}` : '1.5px solid #e2e8f0',
                       background: active ? `${colors[u]}14` : 'white',
                       color: active ? colors[u] : '#94a3b8',
-                      cursor: 'pointer', transition: 'all 0.15s',
                     }}
                   >
                     {u}
@@ -364,24 +301,19 @@ export default function NewReportPage() {
           </div>
 
           {/* Photo Upload */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '8px' }}>
+          <div className="mb-4">
+            <label className="text-xs font-semibold text-slate-600 block mb-2">
               FOTO BUKTI ({photos.length}/5)
             </label>
             {photos.length > 0 && (
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+              <div className="flex gap-1.5 flex-wrap mb-2">
                 {photos.map((photo, i) => (
-                  <div key={i} style={{ position: 'relative', width: 64, height: 64 }}>
+                  <div key={i} className="relative w-14 h-14 md:w-16 md:h-16">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photo.url} alt="" style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: '8px', border: '1px solid #e2e8f0' }} />
+                    <img src={photo.url} alt="" className="w-full h-full object-cover rounded-lg border border-slate-200" />
                     <button
                       onClick={() => setPhotos((p) => p.filter((_, j) => j !== i))}
-                      style={{
-                        position: 'absolute', top: -6, right: -6,
-                        width: 18, height: 18, borderRadius: '50%', border: 'none',
-                        background: '#ef4444', color: 'white', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
+                      className="absolute -top-1.5 -right-1.5 w-[18px] h-[18px] rounded-full border-none bg-red-500 text-white cursor-pointer flex items-center justify-center"
                     >
                       <X size={10} />
                     </button>
@@ -395,17 +327,14 @@ export default function NewReportPage() {
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
-                style={{
-                  border: `2px dashed ${isDragging ? '#16a34a' : '#d1d5db'}`,
-                  borderRadius: '12px', padding: '20px', textAlign: 'center',
-                  cursor: 'pointer', background: isDragging ? '#f0fdf4' : '#fafafa',
-                  transition: 'all 0.2s',
-                }}
+                className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all ${
+                  isDragging ? 'border-green-600 bg-green-50' : 'border-slate-300 bg-slate-50/50'
+                }`}
               >
-                <Camera size={24} style={{ color: '#94a3b8', margin: '0 auto 8px' }} />
-                <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>
-                  <span style={{ color: '#16a34a', fontWeight: 600 }}>Klik untuk unggah</span> atau seret & lepas
-                  <br /><span style={{ fontSize: '10px' }}>PNG, JPG, GIF (maks. 5MB)</span>
+                <Camera size={24} className="text-slate-400 mx-auto mb-2" />
+                <p className="text-xs text-slate-400 m-0 leading-relaxed">
+                  <span className="text-green-600 font-semibold">Klik untuk unggah</span> atau seret & lepas
+                  <br /><span className="text-[10px]">PNG, JPG, GIF (maks. 5MB)</span>
                 </p>
                 <input ref={fileInputRef} type="file" accept="image/*" multiple hidden onChange={(e) => handlePhotoUpload(e.target.files)} />
               </div>
@@ -413,8 +342,8 @@ export default function NewReportPage() {
           </div>
 
           {/* Description */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '6px' }}>
+          <div className="mb-4">
+            <label className="text-xs font-semibold text-slate-600 block mb-1.5">
               DESKRIPSI ({description.length}/1000)
             </label>
             <textarea
@@ -423,27 +352,18 @@ export default function NewReportPage() {
               maxLength={1000}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
-              style={{
-                width: '100%', padding: '10px 12px', borderRadius: '10px',
-                border: '1.5px solid #e2e8f0', fontSize: '13px', color: '#0f172a',
-                outline: 'none', resize: 'none', fontFamily: 'Inter', transition: 'border 0.2s',
-              }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = '#16a34a')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = '#e2e8f0')}
+              className="w-full px-3 py-2.5 rounded-[10px] border-[1.5px] border-slate-200 text-[13px] text-slate-900 outline-none resize-none font-inter transition-colors focus:border-green-600"
             />
           </div>
 
           {/* Location */}
-          <div style={{ marginBottom: '8px' }}>
-            <label style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '6px' }}>
+          <div className="mb-2">
+            <label className="text-xs font-semibold text-slate-600 block mb-1.5">
               LOKASI
             </label>
-            <div style={{
-              display: 'flex', alignItems: 'flex-start', gap: '8px', padding: '10px 12px',
-              border: '1.5px solid #e2e8f0', borderRadius: '10px', background: '#f8fafc',
-            }}>
-              <MapPin size={15} style={{ color: '#16a34a', marginTop: '2px', flexShrink: 0 }} />
-              <span style={{ fontSize: '13px', color: '#0f172a', flex: 1 }}>{location.address}</span>
+            <div className="flex items-start gap-2 p-2.5 border-[1.5px] border-slate-200 rounded-[10px] bg-slate-50">
+              <MapPin size={15} className="text-green-600 mt-0.5 shrink-0" />
+              <span className="text-[13px] text-slate-900 flex-1">{location.address}</span>
               <button
                 onClick={() => {
                   if (navigator.geolocation) {
@@ -452,43 +372,29 @@ export default function NewReportPage() {
                     });
                   }
                 }}
-                style={{
-                  fontSize: '11px', fontWeight: 600, color: '#16a34a', background: 'transparent',
-                  border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0,
-                }}
+                className="text-[11px] font-semibold text-green-600 bg-transparent border-none cursor-pointer p-0 shrink-0"
               >
                 Sesuaikan
               </button>
             </div>
-            <p style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>
+            <p className="text-[11px] text-slate-400 mt-1">
               Klik pada peta untuk memilih lokasi yang tepat
             </p>
           </div>
         </div>
 
         {/* Footer buttons */}
-        <div style={{ padding: '14px 20px', borderTop: '1px solid #f1f5f9', display: 'flex', gap: '8px' }}>
+        <div className="p-3.5 md:px-5 md:py-3.5 border-t border-slate-100 flex gap-2">
           <button
             onClick={() => router.push('/environment')}
-            style={{
-              flex: 1, padding: '10px', borderRadius: '10px', border: '1.5px solid #e2e8f0',
-              background: 'white', fontSize: '13px', fontWeight: 600, color: '#475569', cursor: 'pointer',
-            }}
+            className="flex-1 py-2.5 rounded-[10px] border-[1.5px] border-slate-200 bg-white text-[13px] font-semibold text-slate-600 cursor-pointer"
           >
             Batal
           </button>
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            style={{
-              flex: 2, padding: '10px', borderRadius: '10px', border: 'none',
-              background: '#16a34a', color: 'white', fontSize: '13px', fontWeight: 600,
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              transition: 'background 0.2s', opacity: isSubmitting ? 0.7 : 1,
-            }}
-            onMouseEnter={(e) => { if (!isSubmitting) e.currentTarget.style.background = '#15803d'; }}
-            onMouseLeave={(e) => { if (!isSubmitting) e.currentTarget.style.background = '#16a34a'; }}
+            className="flex-[2] py-2.5 rounded-[10px] border-none bg-green-600 text-white text-[13px] font-semibold cursor-pointer flex items-center justify-center gap-1.5 transition-colors hover:bg-green-700 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Upload size={14} />
             {isSubmitting ? 'Mengunggah...' : 'Kirim Laporan'}
@@ -497,7 +403,7 @@ export default function NewReportPage() {
       </div>
 
       {/* Right Panel - Map */}
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div className="flex-1 relative h-[300px] md:h-full">
         <MapPicker
           center={[location.lat, location.lng]}
           zoom={15}
@@ -506,13 +412,8 @@ export default function NewReportPage() {
           style={{ height: '100%' }}
         />
 
-        <div style={{
-          position: 'absolute', top: 16, right: 16, background: 'white', borderRadius: '10px',
-          padding: '8px 12px', boxShadow: '0 2px 12px rgba(0,0,0,0.12)', fontSize: '12px',
-          fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px',
-          zIndex: 400,
-        }}>
-          <MapPin size={13} color="#16a34a" />
+        <div className="absolute top-3 right-3 bg-white rounded-[10px] px-3 py-2 shadow-md text-xs font-semibold text-slate-600 flex items-center gap-1.5 z-[400]">
+          <MapPin size={13} className="text-green-600" />
           Klik peta untuk memilih lokasi
         </div>
       </div>
