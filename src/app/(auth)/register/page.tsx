@@ -52,10 +52,10 @@ export default function RegisterPage() {
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       {/* Left Banner */}
       <div style={{
-        flex: 1, display: 'none', flexDirection: 'column', padding: '40px',
+        flex: 1, flexDirection: 'column', padding: '40px',
         background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
         color: 'white', position: 'relative', overflow: 'hidden',
-      }} className="lg-flex">
+      }} className="hidden lg:flex">
         {/* Decorative elements */}
         <div style={{ position: 'absolute', top: -100, right: -100, width: 300, height: 300, borderRadius: '50%', background: 'rgba(22,163,74,0.1)' }} />
         <div style={{ position: 'absolute', bottom: -50, left: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(59,130,246,0.1)' }} />
@@ -78,9 +78,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Form */}
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px',
-      }}>
+      <div className="flex-1 flex items-center justify-center p-6 md:p-10">
         <div style={{ width: '100%', maxWidth: '380px' }}>
           <div style={{ marginBottom: '32px' }}>
             <h2 style={{ fontFamily: 'Outfit', fontSize: '28px', fontWeight: 700, color: '#0f172a', margin: '0 0 8px' }}>
@@ -193,11 +191,7 @@ export default function RegisterPage() {
           </p>
         </div>
       </div>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (min-width: 1024px) {
-          .lg-flex { display: flex !important; }
-        }
-      `}} />
+
     </div>
   );
 }

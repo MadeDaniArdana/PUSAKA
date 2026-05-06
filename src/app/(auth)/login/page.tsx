@@ -43,10 +43,10 @@ function LoginContent() {
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       {/* Left Banner */}
       <div style={{
-        flex: 1, display: 'none', flexDirection: 'column', padding: '48px',
+        flex: 1, flexDirection: 'column', padding: '48px',
         background: 'linear-gradient(160deg, #0a0f1e 0%, #0f172a 40%, #161f35 100%)',
         color: 'white', position: 'relative', overflow: 'hidden',
-      }} className="lg-flex">
+      }} className="hidden lg:flex">
         <div style={{ position: 'absolute', top: -80, right: -80, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(22,163,74,0.15) 0%, transparent 70%)' }} />
         <div style={{ position: 'absolute', bottom: -60, left: -60, width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' }} />
 
@@ -77,7 +77,7 @@ function LoginContent() {
       </div>
 
       {/* Right Form */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+      <div className="flex-1 flex items-center justify-center p-6 md:p-10">
         <div style={{ width: '100%', maxWidth: '400px' }}>
 
           {/* Role Toggle */}
@@ -205,9 +205,7 @@ function LoginContent() {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (min-width: 1024px) { .lg-flex { display: flex !important; } }
-      `}} />
+
     </div>
   );
 }

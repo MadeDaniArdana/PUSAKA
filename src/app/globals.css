@@ -159,3 +159,11 @@ body {
 .badge-food { background: #fed7aa; color: #c2410c; }
 .badge-handicrafts { background: #e0e7ff; color: #3730a3; }
 .badge-services { background: #d1fae5; color: #065f46; }
+
+/* Utility: hide scrollbar but keep scroll functionality */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Font utility */
+.font-outfit { font-family: 'Outfit', system-ui, sans-serif; }
+.font-inter { font-family: 'Inter', system-ui, sans-serif; }
