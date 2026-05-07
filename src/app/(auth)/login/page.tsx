@@ -66,12 +66,12 @@ function LoginContent() {
           <p style={{ fontSize: '14px', color: '#64748b', lineHeight: 1.7, maxWidth: '340px', margin: 0 }}>
             Satu portal untuk layanan administrasi digital, pelaporan infrastruktur, dan pemberdayaan UMKM warga.
           </p>
-          <Link href="/overview" style={{
+          <Link href="/" style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
             color: '#4ade80', fontSize: '13px', fontWeight: 600, textDecoration: 'none',
             padding: '8px 0', width: 'fit-content',
           }}>
-            👁️ Lihat laporan tanpa login →
+            ← Kembali ke Beranda
           </Link>
         </div>
       </div>

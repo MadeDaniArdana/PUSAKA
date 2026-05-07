@@ -43,10 +43,18 @@ export async function proxy(request: NextRequest) {
   const isAuthRoute =
     pathname.startsWith('/login') || pathname.startsWith('/register')
 
-  // Redirect root to overview (always public now)
-  if (pathname === '/') {
+  // Dashboard/main app routes — require login
+  const isDashboardRoute =
+    pathname.startsWith('/overview') ||
+    pathname.startsWith('/environment') ||
+    pathname.startsWith('/command-center') ||
+    pathname.startsWith('/administration') ||
+    pathname.startsWith('/marketplace')
+
+  if (!user && isDashboardRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = '/overview'
+    url.pathname = '/login'
+    url.searchParams.set('redirect', pathname)
     return NextResponse.redirect(url)
   }
 
