@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-  LayoutDashboard, Leaf, Radio, Shield, ShoppingBag, HelpCircle,
+  LayoutDashboard, Leaf, Radio, Shield, ShoppingBag, HelpCircle, Globe,
   LogOut, Plus, Settings, LogIn, User, X, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
@@ -14,6 +14,7 @@ const navSections = [
   {
     label: 'OVERVIEW',
     items: [
+      { href: '/', label: 'Beranda', icon: Globe },
       { href: '/overview', label: 'Dashboard', icon: LayoutDashboard },
     ],
   },
@@ -61,7 +62,8 @@ export default function Sidebar() {
   };
 
   const isActive = (href: string) => {
-    if (href === '/overview') return pathname === '/overview' || pathname === '/';
+    if (href === '/') return pathname === '/';
+    if (href === '/overview') return pathname === '/overview';
     return pathname.startsWith(href);
   };
 
@@ -70,9 +72,15 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* ═══ MOBILE: Bottom Navigation Bar ═══ */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0b0f1a] border-t border-white/10 shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
-        <div className="flex items-stretch justify-around h-[60px]">
+      {/* ═══ MOBILE: Bottom Navigation Bar — Light Theme ═══ */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50"
+        style={{
+          background: 'white',
+          borderTop: '1px solid #e2e8f0',
+          boxShadow: '0 -4px 16px rgba(0,0,0,0.08)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'space-around', height: 64 }}>
           {[
             { href: '/overview', label: 'Home', icon: LayoutDashboard },
             { href: '/environment', label: 'Lingkungan', icon: Leaf },
@@ -85,83 +93,194 @@ export default function Sidebar() {
               <Link
                 key={href}
                 href={href}
-                className={`
-                  flex flex-col items-center justify-center gap-0.5 flex-1 no-underline transition-colors relative
-                  ${active ? 'text-green-400' : 'text-slate-500'}
-                `}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 3,
+                  flex: 1,
+                  textDecoration: 'none',
+                  color: active ? '#16a34a' : '#94a3b8',
+                  position: 'relative',
+                  transition: 'color 0.2s',
+                }}
               >
                 {active && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-[3px] bg-green-500 rounded-b-full" />
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 28,
+                    height: 3,
+                    background: '#16a34a',
+                    borderRadius: '0 0 4px 4px',
+                  }} />
                 )}
-                <Icon size={20} strokeWidth={active ? 2.4 : 1.6} />
-                <span className={`text-[9px] leading-none ${active ? 'font-bold' : 'font-medium'}`}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: active ? 'rgba(22,163,74,0.1)' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background 0.2s',
+                }}>
+                  <Icon size={19} strokeWidth={active ? 2.4 : 1.7} />
+                </div>
+                <span style={{ fontSize: 9, lineHeight: 1, fontWeight: active ? 700 : 500 }}>
                   {label}
                 </span>
               </Link>
             );
           })}
+
+          {/* User / Login button */}
           {!loading && (
             user ? (
               <button
                 onClick={handleLogout}
-                className="flex flex-col items-center justify-center gap-0.5 flex-1 text-slate-500 transition-colors"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 3,
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#94a3b8',
+                }}
               >
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-[9px]">
+                <div style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg,#16a34a,#15803d)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontWeight: 800,
+                  fontSize: 11,
+                }}>
                   {avatarLetter}
                 </div>
-                <span className="text-[9px] leading-none font-medium">Akun</span>
+                <span style={{ fontSize: 9, lineHeight: 1, fontWeight: 500 }}>Akun</span>
               </button>
             ) : (
-              <Link href="/login" className="flex flex-col items-center justify-center gap-0.5 flex-1 text-green-400 no-underline">
-                <LogIn size={20} strokeWidth={1.8} />
-                <span className="text-[9px] leading-none font-bold">Masuk</span>
+              <Link href="/login" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 3,
+                flex: 1,
+                textDecoration: 'none',
+                color: '#16a34a',
+              }}>
+                <LogIn size={19} strokeWidth={1.8} />
+                <span style={{ fontSize: 9, lineHeight: 1, fontWeight: 700 }}>Masuk</span>
               </Link>
             )
           )}
         </div>
       </nav>
 
-      {/* ═══ DESKTOP: Dark Vertical Sidebar ═══ */}
-      <aside className={`
-        hidden md:flex flex-col shrink-0 h-full relative
-        bg-[#0b0f1a] border-r border-white/[0.06]
-        transition-all duration-300 ease-in-out
-        ${collapsed ? 'w-[72px]' : 'w-[240px]'}
-      `}>
+      {/* ═══ DESKTOP: Light Vertical Sidebar ═══ */}
+      <aside
+        className="hidden md:flex flex-col shrink-0 h-full relative"
+        style={{
+          width: collapsed ? 72 : 240,
+          background: 'white',
+          borderRight: '1px solid #e2e8f0',
+          boxShadow: '2px 0 12px rgba(0,0,0,0.04)',
+          transition: 'width 0.3s ease',
+        }}
+      >
         {/* Collapse Toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-[52px] z-10 w-6 h-6 bg-[#1a2035] border border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#253050] transition-colors cursor-pointer"
+          style={{
+            position: 'absolute',
+            right: -12,
+            top: 52,
+            zIndex: 10,
+            width: 24,
+            height: 24,
+            background: 'white',
+            border: '1px solid #e2e8f0',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#94a3b8',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            transition: 'color 0.2s, box-shadow 0.2s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#0f172a'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
         >
           {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
 
         {/* Logo */}
-        <div className={`flex items-center gap-3 px-5 pt-6 pb-5 ${collapsed ? 'justify-center px-0' : ''}`}>
-          <img
-            src="/logo.png"
-            alt="PUSAKA"
-            className="w-9 h-9 object-contain shrink-0"
-            style={{ filter: 'drop-shadow(2px 5px 6px rgba(0,0,0,0.4))' }}
-          />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          padding: collapsed ? '24px 0 20px' : '24px 20px 20px',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          borderBottom: '1px solid #f1f5f9',
+        }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            background: 'linear-gradient(135deg,#16a34a,#15803d)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(22,163,74,0.30)',
+            flexShrink: 0,
+          }}>
+            <Globe size={18} color="white" />
+          </div>
           {!collapsed && (
             <div>
-              <p className="font-outfit text-[15px] font-bold text-white m-0 leading-tight">PUSAKA</p>
-              <p className="text-[10px] text-slate-500 m-0 font-semibold tracking-wider uppercase">Smart Village Hub</p>
+              <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 15, fontWeight: 800, margin: 0, color: '#0f172a', lineHeight: 1.2 }}>PUSAKA</p>
+              <p style={{ fontSize: 10, color: '#16a34a', margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Smart Village Hub</p>
             </div>
           )}
         </div>
 
         {/* New Report Button */}
-        <div className={`px-3 mb-2 ${collapsed ? 'px-2' : ''}`}>
+        <div style={{ padding: collapsed ? '12px 8px' : '12px 12px 8px' }}>
           <Link
             href="/environment/new"
             onClick={handleNewReport}
-            className={`
-              flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white
-              rounded-xl py-2.5 text-[13px] font-semibold transition-colors shadow-lg shadow-green-600/20 no-underline
-              ${collapsed ? 'px-0 w-full' : 'px-4'}
-            `}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 7,
+              background: 'linear-gradient(135deg,#16a34a,#15803d)',
+              color: 'white',
+              borderRadius: 12,
+              padding: collapsed ? '10px 0' : '10px 16px',
+              textDecoration: 'none',
+              fontSize: 13,
+              fontWeight: 700,
+              boxShadow: '0 4px 12px rgba(22,163,74,0.30)',
+              transition: 'opacity 0.2s',
+              width: '100%',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.9'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
           >
             <Plus size={16} />
             {!collapsed && <span>Laporan Baru</span>}
@@ -169,21 +288,24 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation Sections */}
-        <nav className="flex-1 overflow-y-auto no-scrollbar px-3 py-2">
+        <nav style={{ flex: 1, overflowY: 'auto', padding: '8px 8px', scrollbarWidth: 'none' }}>
           {navSections.map((section, si) => (
-            <div key={section.label} className={si > 0 ? 'mt-5' : 'mt-2'}>
+            <div key={section.label} style={{ marginTop: si > 0 ? 20 : 8 }}>
               {/* Section Label */}
-              {!collapsed && (
-                <p className="text-[10px] font-bold text-slate-600 tracking-widest uppercase px-3 mb-2">
+              {!collapsed ? (
+                <p style={{
+                  fontSize: 10, fontWeight: 700, color: '#cbd5e1',
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  padding: '0 8px', margin: '0 0 6px',
+                }}>
                   {section.label}
                 </p>
-              )}
-              {collapsed && si > 0 && (
-                <div className="w-6 h-px bg-white/[0.06] mx-auto mb-2" />
-              )}
+              ) : si > 0 ? (
+                <div style={{ width: 28, height: 1, background: '#f1f5f9', margin: '0 auto 8px' }} />
+              ) : null}
 
               {/* Items */}
-              <div className="flex flex-col gap-0.5">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {section.items.map(({ href, label, icon: Icon }) => {
                   const active = isActive(href);
                   return (
@@ -191,24 +313,49 @@ export default function Sidebar() {
                       key={href}
                       href={href}
                       title={collapsed ? label : undefined}
-                      className={`
-                        group relative flex items-center gap-3 rounded-xl no-underline transition-all duration-200
-                        ${collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'}
-                        ${active
-                          ? 'bg-green-500/10 text-green-400'
-                          : 'text-slate-500 hover:bg-white/[0.04] hover:text-slate-300'
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        borderRadius: 12,
+                        textDecoration: 'none',
+                        padding: collapsed ? '10px 0' : '9px 12px',
+                        justifyContent: collapsed ? 'center' : 'flex-start',
+                        background: active ? 'rgba(22,163,74,0.08)' : 'transparent',
+                        color: active ? '#16a34a' : '#64748b',
+                        fontWeight: active ? 600 : 400,
+                        position: 'relative',
+                        transition: 'background 0.15s, color 0.15s',
+                      }}
+                      onMouseEnter={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLAnchorElement).style.background = '#f8fafc';
+                          (e.currentTarget as HTMLAnchorElement).style.color = '#0f172a';
                         }
-                      `}
+                      }}
+                      onMouseLeave={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                          (e.currentTarget as HTMLAnchorElement).style.color = '#64748b';
+                        }
+                      }}
                     >
-                      {/* Active indicator */}
+                      {/* Active indicator bar */}
                       {active && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-green-500 rounded-r-full" />
+                        <div style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: 3,
+                          height: 20,
+                          background: '#16a34a',
+                          borderRadius: '0 4px 4px 0',
+                        }} />
                       )}
-                      <Icon size={18} strokeWidth={active ? 2.2 : 1.6} className="shrink-0" />
+                      <Icon size={17} strokeWidth={active ? 2.3 : 1.7} style={{ flexShrink: 0 }} />
                       {!collapsed && (
-                        <span className={`text-[13px] ${active ? 'font-semibold' : 'font-normal'}`}>
-                          {label}
-                        </span>
+                        <span style={{ fontSize: 13 }}>{label}</span>
                       )}
                     </Link>
                   );
@@ -217,63 +364,118 @@ export default function Sidebar() {
             </div>
           ))}
 
-          {/* Admin link inside navigation */}
+          {/* Admin link */}
           {!loading && isAdminUser && (
-            <div className="mt-5">
-              {!collapsed && (
-                <p className="text-[10px] font-bold text-slate-600 tracking-widest uppercase px-3 mb-2">
+            <div style={{ marginTop: 20 }}>
+              {!collapsed ? (
+                <p style={{
+                  fontSize: 10, fontWeight: 700, color: '#fca5a5',
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  padding: '0 8px', margin: '0 0 6px',
+                }}>
                   ADMIN
                 </p>
+              ) : (
+                <div style={{ width: 28, height: 1, background: '#f1f5f9', margin: '0 auto 8px' }} />
               )}
-              {collapsed && <div className="w-6 h-px bg-white/[0.06] mx-auto mb-2" />}
               <Link
                 href="/admin"
-                className={`
-                  flex items-center gap-3 rounded-xl no-underline transition-all duration-200
-                  ${collapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'}
-                  text-red-400 hover:bg-red-500/10
-                `}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  borderRadius: 12,
+                  textDecoration: 'none',
+                  padding: collapsed ? '10px 0' : '9px 12px',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
+                  color: '#dc2626',
+                  transition: 'background 0.15s',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#fef2f2'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
               >
-                <Settings size={18} strokeWidth={1.6} className="shrink-0" />
-                {!collapsed && <span className="text-[13px] font-medium">Panel Admin</span>}
+                <Settings size={17} strokeWidth={1.7} style={{ flexShrink: 0 }} />
+                {!collapsed && <span style={{ fontSize: 13, fontWeight: 500 }}>Panel Admin</span>}
               </Link>
             </div>
           )}
         </nav>
 
         {/* Bottom — User Profile */}
-        <div className={`border-t border-white/[0.06] p-3 ${collapsed ? 'px-2' : 'px-4'}`}>
+        <div style={{
+          borderTop: '1px solid #f1f5f9',
+          padding: collapsed ? '12px 8px' : '12px 14px',
+        }}>
           {!loading && (
             user ? (
-              <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-xs shrink-0 border-2 border-white/10">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: collapsed ? 'center' : 'flex-start' }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg,#16a34a,#15803d)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontWeight: 800,
+                  fontSize: 13,
+                  flexShrink: 0,
+                  border: '2px solid #dcfce7',
+                }}>
                   {avatarLetter}
                 </div>
                 {!collapsed && (
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-slate-200 m-0 truncate">{displayName}</p>
-                    <p className="text-[10px] text-slate-600 m-0 font-medium">Warga</p>
-                  </div>
+                  <>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {displayName}
+                      </p>
+                      <p style={{ fontSize: 10, color: '#94a3b8', margin: 0, fontWeight: 500 }}>Warga</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      title="Logout"
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: '#cbd5e1',
+                        padding: 4,
+                        borderRadius: 8,
+                        display: 'flex',
+                        alignItems: 'center',
+                        transition: 'color 0.2s, background 0.2s',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#dc2626'; (e.currentTarget as HTMLButtonElement).style.background = '#fef2f2'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#cbd5e1'; (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+                    >
+                      <LogOut size={15} />
+                    </button>
+                  </>
                 )}
-                <button
-                  onClick={handleLogout}
-                  title="Logout"
-                  className={`text-slate-600 hover:text-red-400 transition-colors cursor-pointer bg-transparent border-none p-1 ${collapsed ? 'hidden' : ''}`}
-                >
-                  <LogOut size={16} />
-                </button>
               </div>
             ) : (
               <Link
                 href="/login"
-                className={`
-                  flex items-center gap-2 rounded-xl bg-green-500/10 border border-green-500/20 
-                  text-green-400 no-underline transition-colors hover:bg-green-500/20
-                  ${collapsed ? 'justify-center p-2.5' : 'px-3 py-2.5'}
-                `}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  borderRadius: 12,
+                  background: 'rgba(22,163,74,0.08)',
+                  border: '1px solid rgba(22,163,74,0.2)',
+                  color: '#16a34a',
+                  textDecoration: 'none',
+                  padding: collapsed ? '10px 0' : '9px 14px',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(22,163,74,0.14)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(22,163,74,0.08)'; }}
               >
-                <LogIn size={16} />
-                {!collapsed && <span className="text-[13px] font-semibold">Masuk</span>}
+                <LogIn size={15} />
+                {!collapsed && <span style={{ fontSize: 13, fontWeight: 600 }}>Masuk</span>}
               </Link>
             )
           )}
@@ -282,42 +484,79 @@ export default function Sidebar() {
 
       {/* Login Prompt Modal */}
       {showLoginPrompt && (
-        <div className="fixed inset-0 bg-slate-900/60 z-[2000] flex items-center justify-center backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-[380px] shadow-2xl text-center relative">
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.4)',
+          zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(6px)', padding: 16,
+        }}>
+          <div style={{
+            background: 'white', borderRadius: 24, padding: 32,
+            width: '100%', maxWidth: 380, boxShadow: '0 24px 64px rgba(0,0,0,0.15)',
+            textAlign: 'center', position: 'relative',
+            border: '1px solid #f1f5f9',
+          }}>
             <button
               onClick={() => setShowLoginPrompt(false)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-xl border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-50 text-slate-500"
+              style={{
+                position: 'absolute', top: 14, right: 14,
+                width: 32, height: 32, borderRadius: 10,
+                border: '1px solid #e2e8f0', background: 'white',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#94a3b8', cursor: 'pointer',
+              }}
             >
-              <X size={16} />
+              <X size={15} />
             </button>
 
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center mx-auto mb-4">
-              <User size={24} className="text-green-600" />
+            <div style={{
+              width: 56, height: 56, borderRadius: 16,
+              background: 'linear-gradient(135deg,#f0fdf4,#dcfce7)',
+              border: '1px solid #bbf7d0',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 16px',
+            }}>
+              <User size={24} color="#16a34a" />
             </div>
 
-            <h2 className="font-outfit text-xl font-bold text-slate-900 mb-2">Login Diperlukan</h2>
-            <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+            <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: 20, fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>
+              Login Diperlukan
+            </h2>
+            <p style={{ fontSize: 14, color: '#64748b', margin: '0 0 24px', lineHeight: 1.6 }}>
               Silakan masuk terlebih dahulu untuk membuat laporan baru dan membantu kemajuan desa.
             </p>
 
-            <div className="flex flex-col gap-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <Link
                 href="/login?redirect=/environment/new"
                 onClick={() => setShowLoginPrompt(false)}
-                className="flex items-center justify-center gap-2 p-3.5 rounded-xl bg-gradient-to-br from-green-600 to-green-700 text-white text-sm font-bold shadow-lg shadow-green-600/20 hover:from-green-700 hover:to-green-800 transition-all no-underline"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  padding: '13px 20px', borderRadius: 12,
+                  background: 'linear-gradient(135deg,#16a34a,#15803d)',
+                  color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: 14,
+                  boxShadow: '0 6px 18px rgba(22,163,74,0.30)',
+                }}
               >
-                <LogIn size={18} /> Masuk Sekarang
+                <LogIn size={17} /> Masuk Sekarang
               </Link>
               <Link
                 href="/register"
                 onClick={() => setShowLoginPrompt(false)}
-                className="flex items-center justify-center p-3.5 rounded-xl border-2 border-slate-200 bg-white text-slate-800 text-sm font-bold hover:border-slate-300 transition-colors no-underline"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '13px 20px', borderRadius: 12,
+                  border: '1.5px solid #e2e8f0', background: 'white',
+                  color: '#0f172a', textDecoration: 'none', fontWeight: 600, fontSize: 14,
+                }}
               >
                 Daftar Akun Baru
               </Link>
               <button
                 onClick={() => setShowLoginPrompt(false)}
-                className="text-[13px] text-slate-500 font-medium p-2 mt-2 hover:text-slate-800 transition-colors"
+                style={{
+                  fontSize: 13, color: '#94a3b8', fontWeight: 500, padding: 8,
+                  marginTop: 4, background: 'transparent', border: 'none', cursor: 'pointer',
+                }}
               >
                 Lihat saja dulu →
               </button>
