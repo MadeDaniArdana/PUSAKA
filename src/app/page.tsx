@@ -41,8 +41,8 @@ export default function BerandaPage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const villagesRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
-  const foldLeftRef = useRef<HTMLDivElement>(null);
-  const foldRightRef = useRef<HTMLDivElement>(null);
+  const foldTopRef = useRef<HTMLDivElement>(null);
+  const foldBottomRef = useRef<HTMLDivElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,20 +54,20 @@ export default function BerandaPage() {
       gsap.fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.6, ease: 'power2.out', stagger: 0.1 });
 
       // ── UNFOLD / LIPATAN animation ──
-      // Container fades in first
+      // Container fades in and slightly scales down (like it's falling into place)
       gsap.fromTo(imageWrapRef.current,
-        { opacity: 0, scale: 0.92 },
-        { opacity: 1, scale: 1, duration: 0.5, delay: 0.3, ease: 'power2.out' }
+        { opacity: 0, scale: 0.9, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 1.5, delay: 0.2, ease: 'power2.out' }
       );
-      // Left panel: rotates from -90deg (folded left) to 0 (open)
-      gsap.fromTo(foldLeftRef.current,
-        { rotationY: -90, transformOrigin: 'right center', opacity: 0 },
-        { rotationY: 0, opacity: 1, duration: 1.1, delay: 0.55, ease: 'power3.out' }
+      // Top panel: rotates from 110deg (folded top, past 90 for extra bounce effect) to 0 (open)
+      gsap.fromTo(foldTopRef.current,
+        { rotationX: 110, transformOrigin: 'bottom center', opacity: 0 },
+        { rotationX: 0, opacity: 1, duration: 2.2, delay: 0.35, ease: 'power3.out' }
       );
-      // Right panel: rotates from 90deg (folded right) to 0 (open), slight delay
-      gsap.fromTo(foldRightRef.current,
-        { rotationY: 90, transformOrigin: 'left center', opacity: 0 },
-        { rotationY: 0, opacity: 1, duration: 1.1, delay: 0.75, ease: 'power3.out' }
+      // Bottom panel: rotates from -110deg (folded bottom) to 0 (open)
+      gsap.fromTo(foldBottomRef.current,
+        { rotationX: -110, transformOrigin: 'top center', opacity: 0 },
+        { rotationX: 0, opacity: 1, duration: 2.2, delay: 0.5, ease: 'power3.out' }
       );
       // Floating chips appear after unfold
       gsap.fromTo('.hero-chip',
@@ -270,7 +270,8 @@ export default function BerandaPage() {
             style={{
               position: 'relative', zIndex: 10,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              perspective: 1200,
+              perspective: 1500,
+              transformStyle: 'preserve-3d',
               opacity: 0, // GSAP will animate this in
             }}
           >
@@ -284,70 +285,79 @@ export default function BerandaPage() {
             {/* ── FOLD WRAPPER ── */}
             <div style={{
               width: '100%', maxWidth: 580,
-              display: 'flex',
               borderRadius: 24,
               overflow: 'hidden',
               boxShadow: '0 24px 64px rgba(0,0,0,0.14), 0 8px 24px rgba(22,163,74,0.10)',
               border: '1px solid rgba(255,255,255,0.85)',
               position: 'relative',
             }}>
-              {/* Left panel — shows left half of image */}
-              <div
-                ref={foldLeftRef}
+              {/* Invisible placeholder to establish the exact aspect ratio/height of the original image */}
+              <img
+                src="/desa.jpg"
+                alt=""
                 style={{
-                  flex: 1, overflow: 'hidden',
-                  transformOrigin: 'right center',
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  visibility: 'hidden', // Takes up space but invisible
+                }}
+              />
+              
+              {/* Top panel — shows top half of image */}
+              <div
+                ref={foldTopRef}
+                style={{
+                  position: 'absolute', top: 0, left: 0, width: '100%', height: '50%',
+                  overflow: 'hidden',
+                  transformOrigin: 'bottom center',
                   opacity: 0, // GSAP will animate
-                  position: 'relative',
                 }}
               >
                 <img
                   src="/desa.jpg"
-                  alt="Ilustrasi Desa Smart Village Lampung — bagian kiri"
+                  alt="Ilustrasi Desa Smart Village Lampung — bagian atas"
                   style={{
-                    width: '200%', // show only left half
-                    height: '100%',
+                    width: '100%',
+                    height: '200%', // 200% of the 50% height = 100% of the wrapper height
                     objectFit: 'cover',
-                    objectPosition: 'left center',
+                    objectPosition: 'top center',
                     display: 'block',
-                    minHeight: 320,
                   }}
                 />
                 {/* Fold crease shadow */}
                 <div style={{
-                  position: 'absolute', top: 0, right: 0, width: 18, height: '100%',
-                  background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.10))',
+                  position: 'absolute', bottom: 0, left: 0, width: '100%', height: 18,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.15), transparent)',
                   pointerEvents: 'none',
                 }} />
               </div>
 
-              {/* Right panel — shows right half of image */}
+              {/* Bottom panel — shows bottom half of image */}
               <div
-                ref={foldRightRef}
+                ref={foldBottomRef}
                 style={{
-                  flex: 1, overflow: 'hidden',
-                  transformOrigin: 'left center',
+                  position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%',
+                  overflow: 'hidden',
+                  transformOrigin: 'top center',
                   opacity: 0, // GSAP will animate
-                  position: 'relative',
                 }}
               >
                 <img
                   src="/desa.jpg"
-                  alt="Ilustrasi Desa Smart Village Lampung — bagian kanan"
+                  alt="Ilustrasi Desa Smart Village Lampung — bagian bawah"
                   style={{
-                    width: '200%', // show only right half
-                    height: '100%',
+                    width: '100%', 
+                    height: '200%', // 200% of the 50% height = 100% of the wrapper height
                     objectFit: 'cover',
-                    objectPosition: 'right center',
-                    marginLeft: '-100%', // offset to show right side
+                    objectPosition: 'bottom center',
+                    transform: 'translateY(-50%)', // Shift up by 50% of the image's own height
                     display: 'block',
-                    minHeight: 320,
                   }}
                 />
                 {/* Fold crease shadow */}
                 <div style={{
-                  position: 'absolute', top: 0, left: 0, width: 18, height: '100%',
-                  background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.10))',
+                  position: 'absolute', top: 0, left: 0, width: '100%', height: 18,
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.15), transparent)',
                   pointerEvents: 'none',
                 }} />
               </div>
