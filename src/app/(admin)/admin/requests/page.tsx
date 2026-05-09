@@ -111,7 +111,7 @@ export default function AdminRequestsPage() {
       
       {/* Header */}
       <div className="mb-5 md:mb-6">
-        <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-50 m-0 mb-2">
+        <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-900 m-0 mb-2">
           Manajemen Permohonan Surat
         </h1>
         <p className="text-sm text-slate-400 m-0">
@@ -120,15 +120,15 @@ export default function AdminRequestsPage() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-5 md:mb-6 bg-slate-800/50 p-3 md:p-4 rounded-2xl border border-white/5">
+      <div className="flex flex-col sm:flex-row gap-3 mb-5 md:mb-6 bg-white p-3 md:p-4 rounded-2xl border border-slate-200 shadow-sm">
         <div className="relative flex-1">
-          <Search size={16} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search size={16} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             placeholder="Cari nama pemohon, NIK, atau jenis surat..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
+            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function AdminRequestsPage() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="py-2.5 px-3.5 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
+            className="py-2.5 px-3.5 rounded-[10px] bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none"
           >
             <option value="Semua">Semua Status</option>
             <option value="Menunggu">Menunggu</option>
@@ -148,7 +148,7 @@ export default function AdminRequestsPage() {
       </div>
 
       {/* Table / Cards */}
-      <div className="bg-slate-800/50 border border-white/5 rounded-2xl flex-1 overflow-hidden flex flex-col">
+      <div className="bg-white border border-slate-200 rounded-2xl flex-1 overflow-hidden flex flex-col shadow-sm">
         {loading ? (
           <div className="flex justify-center items-center flex-1 text-slate-400">
             Memuat permohonan...
@@ -164,23 +164,23 @@ export default function AdminRequestsPage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-white/[0.02]">
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">JENIS DOKUMEN</th>
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">DATA PEMOHON</th>
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5 w-[25%]">KEPERLUAN</th>
-                    <th className="text-right p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">AKSI / STATUS</th>
+                  <tr className="bg-slate-50">
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">JENIS DOKUMEN</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">DATA PEMOHON</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200 w-[25%]">KEPERLUAN</th>
+                    <th className="text-right p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">AKSI / STATUS</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredRequests.map((req) => (
-                    <tr key={req.id} className="border-b border-white/[0.04]">
+                    <tr key={req.id} className="border-b border-slate-100">
                       <td className="p-5 align-top">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-10 h-10 rounded-[10px] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                            <FileCheck size={18} className="text-blue-400" />
+                          <div className="w-10 h-10 rounded-[10px] bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
+                            <FileCheck size={18} className="text-blue-500" />
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-slate-50 m-0 mb-1 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
+                            <p className="text-sm font-semibold text-slate-900 m-0 mb-1 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
                             <p className="text-[11px] text-slate-500 m-0">
                               {new Date(req.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                             </p>
@@ -188,11 +188,11 @@ export default function AdminRequestsPage() {
                         </div>
                       </td>
                       <td className="p-5 align-top">
-                        <p className="text-sm font-semibold text-slate-200 m-0 mb-1">{req.requester_name}</p>
-                        <p className="text-[11px] text-slate-400 m-0">No. Resi: <span className="text-slate-300 font-mono">{req.tracking_number}</span></p>
+                        <p className="text-sm font-semibold text-slate-700 m-0 mb-1">{req.requester_name}</p>
+                        <p className="text-[11px] text-slate-400 m-0">No. Resi: <span className="text-slate-600 font-mono">{req.tracking_number}</span></p>
                       </td>
                       <td className="p-5 align-top">
-                        <p className="text-[13px] text-slate-300 m-0 leading-relaxed line-clamp-2">
+                        <p className="text-[13px] text-slate-500 m-0 leading-relaxed line-clamp-2">
                           Pengajuan layanan administrasi digital
                         </p>
                       </td>
@@ -215,9 +215,9 @@ export default function AdminRequestsPage() {
                         ) : (
                           <div className="flex flex-col items-end gap-2">
                             <span className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold uppercase" style={{
-                              background: req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
-                              color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#34d399' : '#f87171',
-                              border: `1px solid ${req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}`
+                              background: req.status === 'Selesai' || req.status === 'Disetujui' ? '#dcfce7' : '#fee2e2',
+                              color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#16a34a' : '#dc2626',
+                              border: `1px solid ${req.status === 'Selesai' || req.status === 'Disetujui' ? '#bbf7d0' : '#fecaca'}`
                             }}>
                               {req.status}
                             </span>
@@ -241,14 +241,14 @@ export default function AdminRequestsPage() {
             {/* Mobile card view */}
             <div className="md:hidden flex flex-col gap-3 p-3 overflow-y-auto">
               {filteredRequests.map((req) => (
-                <div key={req.id} className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                <div key={req.id} className="bg-slate-50 rounded-xl p-4 border border-slate-200">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-[10px] bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                      <FileCheck size={16} className="text-blue-400" />
+                    <div className="w-10 h-10 rounded-[10px] bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
+                      <FileCheck size={16} className="text-blue-500" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-slate-50 m-0 mb-0.5 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
-                      <p className="text-[11px] text-slate-400 m-0">{req.requester_name} • <span className="font-mono">{req.tracking_number}</span></p>
+                      <p className="text-[13px] font-semibold text-slate-900 m-0 mb-0.5 capitalize">{req.type?.replace(/-/g, ' ') || 'Dokumen'}</p>
+                      <p className="text-[11px] text-slate-500 m-0">{req.requester_name} • <span className="font-mono">{req.tracking_number}</span></p>
                     </div>
                   </div>
                   <p className="text-[11px] text-slate-500 m-0 mb-3">
@@ -273,8 +273,8 @@ export default function AdminRequestsPage() {
                   ) : (
                     <div className="flex items-center justify-between">
                       <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase" style={{
-                        background: req.status === 'Selesai' || req.status === 'Disetujui' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
-                        color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#34d399' : '#f87171',
+                        background: req.status === 'Selesai' || req.status === 'Disetujui' ? '#dcfce7' : '#fee2e2',
+                        color: req.status === 'Selesai' || req.status === 'Disetujui' ? '#16a34a' : '#dc2626',
                       }}>
                         {req.status}
                       </span>
@@ -297,35 +297,35 @@ export default function AdminRequestsPage() {
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 bg-slate-900/80 z-[1000] flex items-center justify-center p-4 md:p-5">
-          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 w-full max-w-[480px] shadow-2xl border border-white/10">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4 md:p-5">
+          <div className="bg-white rounded-3xl p-6 md:p-8 w-full max-w-[480px] shadow-2xl border border-slate-200">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-outfit text-lg md:text-xl font-bold text-white m-0">Unggah Dokumen Final</h2>
+              <h2 className="font-outfit text-lg md:text-xl font-bold text-slate-900 m-0">Unggah Dokumen Final</h2>
               <button onClick={closeUploadModal} className="bg-transparent border-none text-slate-400 cursor-pointer">
                 <X size={20} />
               </button>
             </div>
             
             <div className="mb-6">
-              <p className="text-sm text-slate-300 mb-4 leading-relaxed">
-                Unggah file dokumen surat (PDF) untuk pemohon <strong className="text-white">{selectedRequestForUpload?.requester_name}</strong>. Setelah diunggah, pemohon dapat mengunduhnya langsung dari dashboard mereka.
+              <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                Unggah file dokumen surat (PDF) untuk pemohon <strong className="text-slate-900">{selectedRequestForUpload?.requester_name}</strong>. Setelah diunggah, pemohon dapat mengunduhnya langsung dari dashboard mereka.
               </p>
               
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-white/20 rounded-2xl p-6 md:p-8 text-center cursor-pointer bg-slate-900/40 transition-colors hover:border-white/40"
+                className="border-2 border-dashed border-slate-300 rounded-2xl p-6 md:p-8 text-center cursor-pointer bg-slate-50 transition-colors hover:border-slate-400"
               >
-                <Upload size={32} className="text-slate-500 mx-auto mb-3" />
-                <p className="m-0 text-sm text-slate-50 font-semibold">
+                <Upload size={32} className="text-slate-400 mx-auto mb-3" />
+                <p className="m-0 text-sm text-slate-900 font-semibold">
                   {fileToUpload ? fileToUpload.name : 'Pilih File Dokumen (PDF)'}
                 </p>
-                <p className="m-0 mt-2 text-xs text-slate-500">Maksimal 5MB</p>
+                <p className="m-0 mt-2 text-xs text-slate-400">Maksimal 5MB</p>
               </div>
               <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".pdf,.doc,.docx" />
             </div>
 
             <div className="flex gap-3">
-              <button onClick={closeUploadModal} className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-50 text-sm font-semibold cursor-pointer">
+              <button onClick={closeUploadModal} className="flex-1 py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 text-sm font-semibold cursor-pointer">
                 Batal
               </button>
               <button 

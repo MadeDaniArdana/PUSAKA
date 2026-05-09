@@ -88,3 +88,32 @@ DROP POLICY IF EXISTS "Public Access" ON storage.objects;
 CREATE POLICY "Public Access" ON storage.objects FOR SELECT USING ( bucket_id = 'reports' );
 DROP POLICY IF EXISTS "Allow authenticated uploads" ON storage.objects;
 CREATE POLICY "Allow authenticated uploads" ON storage.objects FOR INSERT TO authenticated WITH CHECK ( bucket_id = 'reports' );
+
+-- ═══════════════════════════════════════════
+-- Village Boundaries (Pemetaan Wilayah Desa)
+-- ═══════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS public.village_boundaries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT,
+    color TEXT NOT NULL DEFAULT '#16a34a',
+    coordinates JSONB NOT NULL DEFAULT '[]'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.village_boundaries ENABLE ROW LEVEL SECURITY;
+
+-- Everyone can read village boundaries
+DROP POLICY IF EXISTS "Allow public read village_boundaries" ON public.village_boundaries;
+CREATE POLICY "Allow public read village_boundaries" ON public.village_boundaries FOR SELECT USING (true);
+
+-- Only authenticated users (admin) can insert/update/delete
+DROP POLICY IF EXISTS "Allow authenticated insert village_boundaries" ON public.village_boundaries;
+CREATE POLICY "Allow authenticated insert village_boundaries" ON public.village_boundaries FOR INSERT TO authenticated WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow authenticated update village_boundaries" ON public.village_boundaries;
+CREATE POLICY "Allow authenticated update village_boundaries" ON public.village_boundaries FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow authenticated delete village_boundaries" ON public.village_boundaries;
+CREATE POLICY "Allow authenticated delete village_boundaries" ON public.village_boundaries FOR DELETE TO authenticated USING (true);

@@ -72,7 +72,7 @@ export default function AdminMarketplacePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5 md:mb-6">
         <div>
-          <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-50 m-0 mb-2">
+          <h1 className="font-outfit text-xl md:text-[28px] font-bold text-slate-900 m-0 mb-2">
             Direktori UMKM
           </h1>
           <p className="text-sm text-slate-400 m-0">
@@ -88,21 +88,21 @@ export default function AdminMarketplacePage() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex gap-3 md:gap-4 mb-5 md:mb-6 bg-slate-800/50 p-3 md:p-4 rounded-2xl border border-white/5">
+      <div className="flex gap-3 md:gap-4 mb-5 md:mb-6 bg-white p-3 md:p-4 rounded-2xl border border-slate-200 shadow-sm">
         <div className="relative w-full max-w-[400px]">
-          <Search size={16} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search size={16} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input 
             type="text" 
             placeholder="Cari nama toko atau pemilik..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-900/60 border border-white/10 text-slate-50 text-[13px] outline-none"
+            className="w-full py-2.5 px-3.5 pl-10 rounded-[10px] bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none"
           />
         </div>
       </div>
 
       {/* Table / Cards */}
-      <div className="bg-slate-800/50 border border-white/5 rounded-2xl flex-1 overflow-hidden flex flex-col">
+      <div className="bg-white border border-slate-200 rounded-2xl flex-1 overflow-hidden flex flex-col shadow-sm">
         {loading ? (
           <div className="flex justify-center items-center flex-1 text-slate-400">Memuat direktori...</div>
         ) : filtered.length === 0 ? (
@@ -116,39 +116,39 @@ export default function AdminMarketplacePage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-white/[0.02]">
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">INFO UMKM</th>
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">KATEGORI</th>
-                    <th className="text-left p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">KONTAK PEMILIK</th>
-                    <th className="text-right p-4 px-5 text-xs text-slate-400 font-semibold border-b border-white/5">AKSI</th>
+                  <tr className="bg-slate-50">
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">INFO UMKM</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">KATEGORI</th>
+                    <th className="text-left p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">KONTAK PEMILIK</th>
+                    <th className="text-right p-4 px-5 text-xs text-slate-500 font-semibold border-b border-slate-200">AKSI</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((biz) => (
-                    <tr key={biz.id} className="border-b border-white/[0.04]">
+                    <tr key={biz.id} className="border-b border-slate-100">
                       <td className="p-4 px-5">
                         <div className="flex items-center gap-3">
                           {biz.image_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={biz.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
                           ) : (
-                            <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
-                              <Store size={20} className="text-slate-500" />
+                            <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center">
+                              <Store size={20} className="text-slate-400" />
                             </div>
                           )}
                           <div>
-                            <p className="text-sm font-semibold text-slate-50 m-0 mb-1">{biz.name}</p>
-                            <p className="text-xs text-slate-500 m-0 line-clamp-1">{biz.description}</p>
+                            <p className="text-sm font-semibold text-slate-900 m-0 mb-1">{biz.name}</p>
+                            <p className="text-xs text-slate-400 m-0 line-clamp-1">{biz.description}</p>
                           </div>
                         </div>
                       </td>
                       <td className="p-4 px-5">
-                        <span className="bg-white/5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold text-slate-300">
+                        <span className="bg-slate-100 px-2.5 py-1.5 rounded-md text-[11px] font-semibold text-slate-600">
                           {biz.category}
                         </span>
                       </td>
                       <td className="p-4 px-5">
-                        <p className="text-[13px] text-slate-200 m-0 mb-1 font-medium">{biz.owner_name}</p>
+                        <p className="text-[13px] text-slate-700 m-0 mb-1 font-medium">{biz.owner_name}</p>
                         <p className="text-xs text-slate-400 m-0 font-mono">{biz.phone_number}</p>
                       </td>
                       <td className="p-4 px-5 text-right">
@@ -169,19 +169,19 @@ export default function AdminMarketplacePage() {
             {/* Mobile card view */}
             <div className="md:hidden flex flex-col gap-3 p-3 overflow-y-auto">
               {filtered.map((biz) => (
-                <div key={biz.id} className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                <div key={biz.id} className="bg-slate-50 rounded-xl p-4 border border-slate-200">
                   <div className="flex gap-3 mb-3">
                     {biz.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={biz.image_url} alt="" className="w-12 h-12 rounded-lg object-cover shrink-0" />
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
-                        <Store size={18} className="text-slate-500" />
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+                        <Store size={18} className="text-slate-400" />
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-slate-50 m-0 mb-0.5 truncate">{biz.name}</p>
-                      <span className="inline-block bg-white/5 px-2 py-0.5 rounded text-[10px] font-semibold text-slate-300">{biz.category}</span>
+                      <p className="text-[13px] font-semibold text-slate-900 m-0 mb-0.5 truncate">{biz.name}</p>
+                      <span className="inline-block bg-slate-100 px-2 py-0.5 rounded text-[10px] font-semibold text-slate-600">{biz.category}</span>
                     </div>
                     <button 
                       onClick={() => handleDelete(biz.id, biz.name)}
@@ -201,54 +201,54 @@ export default function AdminMarketplacePage() {
 
       {/* Modal Tambah UMKM */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[1000] p-4 md:p-5">
-          <div className="bg-slate-900 border border-white/10 rounded-3xl w-full max-w-[500px] shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-5 md:p-6 border-b border-white/5 flex justify-between items-center sticky top-0 bg-slate-900 z-10 rounded-t-3xl">
-              <h2 className="font-outfit text-lg font-semibold text-slate-50 m-0">Registrasi UMKM Baru</h2>
-              <button onClick={() => setShowForm(false)} className="bg-transparent border-none text-slate-500 cursor-pointer"><X size={20} /></button>
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[1000] p-4 md:p-5">
+          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-[500px] shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-5 md:p-6 border-b border-slate-200 flex justify-between items-center sticky top-0 bg-white z-10 rounded-t-3xl">
+              <h2 className="font-outfit text-lg font-semibold text-slate-900 m-0">Registrasi UMKM Baru</h2>
+              <button onClick={() => setShowForm(false)} className="bg-transparent border-none text-slate-400 cursor-pointer"><X size={20} /></button>
             </div>
             
             <form onSubmit={handleAddSubmit} className="p-5 md:p-6 flex flex-col gap-4">
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1.5">NAMA USAHA</label>
-                <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="Contoh: Kedai Mak Nyus" />
+                <label className="text-xs font-semibold text-slate-500 block mb-1.5">NAMA USAHA</label>
+                <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none" placeholder="Contoh: Kedai Mak Nyus" />
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
-                  <label className="text-xs font-semibold text-slate-400 block mb-1.5">KATEGORI</label>
-                  <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none">
-                    <option value="Kuliner" style={{ background: '#0f172a' }}>Kuliner</option>
-                    <option value="Jasa" style={{ background: '#0f172a' }}>Jasa</option>
-                    <option value="Produk Lokal" style={{ background: '#0f172a' }}>Produk Lokal</option>
+                  <label className="text-xs font-semibold text-slate-500 block mb-1.5">KATEGORI</label>
+                  <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none">
+                    <option value="Kuliner">Kuliner</option>
+                    <option value="Jasa">Jasa</option>
+                    <option value="Produk Lokal">Produk Lokal</option>
                   </select>
                 </div>
                 <div className="flex-1">
-                  <label className="text-xs font-semibold text-slate-400 block mb-1.5">NOMOR WA (TANPA 0)</label>
-                  <input required type="text" value={formData.phone_number} onChange={e => setFormData({...formData, phone_number: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="812345678" />
+                  <label className="text-xs font-semibold text-slate-500 block mb-1.5">NOMOR WA (TANPA 0)</label>
+                  <input required type="text" value={formData.phone_number} onChange={e => setFormData({...formData, phone_number: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none" placeholder="812345678" />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1.5">NAMA PEMILIK</label>
-                <input required type="text" value={formData.owner_name} onChange={e => setFormData({...formData, owner_name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="Nama lengkap" />
+                <label className="text-xs font-semibold text-slate-500 block mb-1.5">NAMA PEMILIK</label>
+                <input required type="text" value={formData.owner_name} onChange={e => setFormData({...formData, owner_name: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none" placeholder="Nama lengkap" />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1.5">DESKRIPSI (Opsional)</label>
-                <textarea rows={2} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none resize-none" placeholder="Jelaskan produk/jasa yang dijual..." />
+                <label className="text-xs font-semibold text-slate-500 block mb-1.5">DESKRIPSI (Opsional)</label>
+                <textarea rows={2} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full py-2.5 px-3.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none resize-none" placeholder="Jelaskan produk/jasa yang dijual..." />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-400 block mb-1.5">URL GAMBAR (Opsional)</label>
+                <label className="text-xs font-semibold text-slate-500 block mb-1.5">URL GAMBAR (Opsional)</label>
                 <div className="relative">
-                  <ImageIcon size={14} className="text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input type="url" value={formData.image_url} onChange={e => setFormData({...formData, image_url: e.target.value})} className="w-full py-2.5 px-3.5 pl-9 rounded-lg bg-white/5 border border-white/10 text-white text-[13px] outline-none" placeholder="https://..." />
+                  <ImageIcon size={14} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input type="url" value={formData.image_url} onChange={e => setFormData({...formData, image_url: e.target.value})} className="w-full py-2.5 px-3.5 pl-9 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-[13px] outline-none" placeholder="https://..." />
                 </div>
               </div>
 
               <div className="flex gap-3 mt-2">
-                <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-3 rounded-[10px] bg-transparent border border-white/10 text-slate-300 text-[13px] font-semibold cursor-pointer">Batal</button>
+                <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-3 rounded-[10px] bg-slate-100 border border-slate-200 text-slate-700 text-[13px] font-semibold cursor-pointer">Batal</button>
                 <button type="submit" disabled={isSubmitting} className="flex-1 py-3 rounded-[10px] bg-green-600 border-none text-white text-[13px] font-semibold cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
                   {isSubmitting ? 'Menyimpan...' : 'Simpan UMKM'}
                 </button>

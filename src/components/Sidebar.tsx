@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, Leaf, Radio, Shield, ShoppingBag, HelpCircle, Globe,
-  LogOut, Plus, Settings, LogIn, User, X, ChevronLeft, ChevronRight,
+  LogOut, Plus, Settings, LogIn, User, X, ChevronLeft, ChevronRight, Map,
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,6 +23,7 @@ const navSections = [
     items: [
       { href: '/environment', label: 'Lingkungan', icon: Leaf },
       { href: '/command-center', label: 'Pusat Komando', icon: Radio },
+      { href: '/village-map', label: 'Peta Wilayah', icon: Map },
     ],
   },
   {
@@ -85,7 +86,7 @@ export default function Sidebar() {
             { href: '/overview', label: 'Home', icon: LayoutDashboard },
             { href: '/environment', label: 'Lingkungan', icon: Leaf },
             { href: '/command-center', label: 'Komando', icon: Radio },
-            { href: '/administration', label: 'Surat', icon: Shield },
+            { href: '/village-map', label: 'Peta', icon: Map },
             { href: '/marketplace', label: 'Pasar', icon: ShoppingBag },
           ].map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
