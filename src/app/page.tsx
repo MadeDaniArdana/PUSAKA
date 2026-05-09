@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -41,6 +41,9 @@ export default function BerandaPage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const villagesRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const foldLeftRef = useRef<HTMLDivElement>(null);
+  const foldRightRef = useRef<HTMLDivElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -49,6 +52,28 @@ export default function BerandaPage() {
       gsap.fromTo('.hero-title', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.2, ease: 'power3.out' });
       gsap.fromTo('.hero-desc', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.4, ease: 'power2.out' });
       gsap.fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.6, ease: 'power2.out', stagger: 0.1 });
+
+      // ── UNFOLD / LIPATAN animation ──
+      // Container fades in first
+      gsap.fromTo(imageWrapRef.current,
+        { opacity: 0, scale: 0.92 },
+        { opacity: 1, scale: 1, duration: 0.5, delay: 0.3, ease: 'power2.out' }
+      );
+      // Left panel: rotates from -90deg (folded left) to 0 (open)
+      gsap.fromTo(foldLeftRef.current,
+        { rotationY: -90, transformOrigin: 'right center', opacity: 0 },
+        { rotationY: 0, opacity: 1, duration: 1.1, delay: 0.55, ease: 'power3.out' }
+      );
+      // Right panel: rotates from 90deg (folded right) to 0 (open), slight delay
+      gsap.fromTo(foldRightRef.current,
+        { rotationY: 90, transformOrigin: 'left center', opacity: 0 },
+        { rotationY: 0, opacity: 1, duration: 1.1, delay: 0.75, ease: 'power3.out' }
+      );
+      // Floating chips appear after unfold
+      gsap.fromTo('.hero-chip',
+        { opacity: 0, scale: 0.7 },
+        { opacity: 1, scale: 1, duration: 0.5, delay: 1.6, stagger: 0.15, ease: 'back.out(1.7)' }
+      );
 
       // Floating blobs
       gsap.to('.hero-blob', {
@@ -238,34 +263,102 @@ export default function BerandaPage() {
             </div>
           </div>
 
-          {/* RIGHT — Village Illustration */}
-          <div className="hero-image-col hero-title" style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-            {/* Glow ring behind image */}
+          {/* RIGHT — Village Illustration with UNFOLD animation */}
+          <div
+            className="hero-image-col"
+            ref={imageWrapRef}
+            style={{
+              position: 'relative', zIndex: 10,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              perspective: 1200,
+              opacity: 0, // GSAP will animate this in
+            }}
+          >
+            {/* Glow ring */}
             <div style={{
-              position: 'absolute', inset: '-20px',
-              borderRadius: 32,
-              background: 'radial-gradient(ellipse at center, rgba(22,163,74,0.12) 0%, rgba(37,99,235,0.06) 50%, transparent 75%)',
+              position: 'absolute', inset: '-20px', borderRadius: 32,
+              background: 'radial-gradient(ellipse at center, rgba(22,163,74,0.14) 0%, rgba(37,99,235,0.07) 55%, transparent 78%)',
               pointerEvents: 'none',
             }} />
-            <img
-              src="/desa.jpg"
-              alt="Ilustrasi Desa Smart Village Lampung"
-              style={{
-                width: '100%',
-                maxWidth: 580,
-                height: 'auto',
-                borderRadius: 24,
-                boxShadow: '0 24px 64px rgba(0,0,0,0.12), 0 8px 24px rgba(22,163,74,0.10)',
-                display: 'block',
-                border: '1px solid rgba(255,255,255,0.8)',
-              }}
-            />
-            {/* Floating stat chip */}
+
+            {/* ── FOLD WRAPPER ── */}
             <div style={{
-              position: 'absolute', bottom: 24, left: -24,
+              width: '100%', maxWidth: 580,
+              display: 'flex',
+              borderRadius: 24,
+              overflow: 'hidden',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.14), 0 8px 24px rgba(22,163,74,0.10)',
+              border: '1px solid rgba(255,255,255,0.85)',
+              position: 'relative',
+            }}>
+              {/* Left panel — shows left half of image */}
+              <div
+                ref={foldLeftRef}
+                style={{
+                  flex: 1, overflow: 'hidden',
+                  transformOrigin: 'right center',
+                  opacity: 0, // GSAP will animate
+                  position: 'relative',
+                }}
+              >
+                <img
+                  src="/desa.jpg"
+                  alt="Ilustrasi Desa Smart Village Lampung — bagian kiri"
+                  style={{
+                    width: '200%', // show only left half
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'left center',
+                    display: 'block',
+                    minHeight: 320,
+                  }}
+                />
+                {/* Fold crease shadow */}
+                <div style={{
+                  position: 'absolute', top: 0, right: 0, width: 18, height: '100%',
+                  background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.10))',
+                  pointerEvents: 'none',
+                }} />
+              </div>
+
+              {/* Right panel — shows right half of image */}
+              <div
+                ref={foldRightRef}
+                style={{
+                  flex: 1, overflow: 'hidden',
+                  transformOrigin: 'left center',
+                  opacity: 0, // GSAP will animate
+                  position: 'relative',
+                }}
+              >
+                <img
+                  src="/desa.jpg"
+                  alt="Ilustrasi Desa Smart Village Lampung — bagian kanan"
+                  style={{
+                    width: '200%', // show only right half
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'right center',
+                    marginLeft: '-100%', // offset to show right side
+                    display: 'block',
+                    minHeight: 320,
+                  }}
+                />
+                {/* Fold crease shadow */}
+                <div style={{
+                  position: 'absolute', top: 0, left: 0, width: 18, height: '100%',
+                  background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.10))',
+                  pointerEvents: 'none',
+                }} />
+              </div>
+            </div>
+
+            {/* Floating stat chip — bottom left */}
+            <div className="hero-chip" style={{
+              position: 'absolute', bottom: -16, left: -20,
               background: 'white', borderRadius: 14, padding: '12px 18px',
               boxShadow: '0 8px 24px rgba(0,0,0,0.10)', display: 'flex', alignItems: 'center', gap: 10,
-              border: '1px solid #e2e8f0',
+              border: '1px solid #e2e8f0', opacity: 0,
             }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <MapPin size={16} color="#16a34a" />
@@ -275,12 +368,13 @@ export default function BerandaPage() {
                 <p style={{ margin: 0, fontSize: 13, color: '#0f172a', fontWeight: 700 }}>Lampung, Indonesia</p>
               </div>
             </div>
-            {/* Floating users chip */}
-            <div style={{
-              position: 'absolute', top: 24, right: -20,
+
+            {/* Floating users chip — top right */}
+            <div className="hero-chip" style={{
+              position: 'absolute', top: -16, right: -16,
               background: 'white', borderRadius: 14, padding: '12px 18px',
               boxShadow: '0 8px 24px rgba(0,0,0,0.10)', display: 'flex', alignItems: 'center', gap: 10,
-              border: '1px solid #e2e8f0',
+              border: '1px solid #e2e8f0', opacity: 0,
             }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: '#dbeafe', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Users size={16} color="#2563eb" />
