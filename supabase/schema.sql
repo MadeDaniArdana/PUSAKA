@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.requests (
     status TEXT NOT NULL DEFAULT 'Menunggu',
     tracking_number TEXT UNIQUE NOT NULL,
     requester_name TEXT NOT NULL,
+    file_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

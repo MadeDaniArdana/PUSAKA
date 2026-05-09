@@ -372,9 +372,17 @@ export default function AdministrationPage() {
           </div>
 
           {/* Download button */}
-          {selectedRequest.status === 'Disetujui' && (
+          {(selectedRequest.status === 'Disetujui' || selectedRequest.status === 'Selesai') && (
             <div style={{ padding: '16px 20px', borderTop: '1px solid #f1f5f9' }}>
-              <button style={{
+              <button 
+                onClick={() => {
+                  if (selectedRequest.file_url) {
+                    window.open(selectedRequest.file_url, '_blank');
+                  } else {
+                    alert('Dokumen fisik sedang disiapkan di balai desa. Jika ada versi digital, akan muncul di sini nanti.');
+                  }
+                }}
+                style={{
                 width: '100%', padding: '12px', borderRadius: '10px', border: 'none',
                 background: '#0f172a', color: 'white', fontSize: '13px', fontWeight: 700,
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
