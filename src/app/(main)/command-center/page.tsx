@@ -21,12 +21,21 @@ const statusColorMap: Record<string, string> = {
   Selesai: '#22c55e'
 };
 
+interface VillageBoundary {
+  id: string;
+  name: string;
+  description: string | null;
+  color: string;
+  coordinates: [number, number][];
+}
+
 export default function CommandCenterPage() {
   const [activeCategories, setActiveCategories] = useState<string[]>(['Sampah / Limbah', 'Infrastruktur', 'Penghijauan', 'Air / Drainase', 'Keamanan']);
   const [activeStatuses, setActiveStatuses] = useState<string[]>(['Menunggu', 'Diproses', 'Selesai']);
   const [showFilters, setShowFilters] = useState(false);
   const [showMobileList, setShowMobileList] = useState(false);
   const [reports, setReports] = useState<any[]>([]);
+  const [villageBoundaries, setVillageBoundaries] = useState<VillageBoundary[]>([]);
 
   useEffect(() => {
     async function fetchReports() {
@@ -39,7 +48,16 @@ export default function CommandCenterPage() {
         setReports(data);
       }
     }
+
+    async function fetchBoundaries() {
+      const { data } = await supabase
+        .from('village_boundaries')
+        .select('*');
+      if (data) setVillageBoundaries(data);
+    }
+
     fetchReports();
+    fetchBoundaries();
   }, []);
 
   const toggleCategory = (id: string) => {
@@ -58,6 +76,13 @@ export default function CommandCenterPage() {
     lat: r.location_lat, lng: r.location_lng, color: statusColorMap[r.status] || '#16a34a', popup: r.title,
   }));
 
+  const mapPolygons = villageBoundaries.map((b) => ({
+    coordinates: b.coordinates,
+    color: b.color,
+    name: b.name,
+    description: b.description || undefined,
+  }));
+
   const filterStatuses = [
     { id: 'Menunggu', label: 'Menunggu', count: reports.filter(r => r.status === 'Menunggu').length, color: '#ef4444' },
     { id: 'Diproses', label: 'Diproses', count: reports.filter(r => r.status === 'Diproses').length, color: '#f59e0b' },
@@ -72,6 +97,7 @@ export default function CommandCenterPage() {
           center={[-5.4254, 105.2580]}
           zoom={12}
           markers={mapMarkers}
+          polygons={mapPolygons}
           interactive={false}
           style={{ height: '100%' }}
         />

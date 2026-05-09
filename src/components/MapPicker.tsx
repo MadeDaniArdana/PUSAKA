@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 
+interface PolygonData {
+  coordinates: [number, number][];
+  color?: string;
+  name?: string;
+  description?: string;
+}
+
 interface MapPickerProps {
   center?: [number, number];
   zoom?: number;
@@ -12,6 +19,7 @@ interface MapPickerProps {
     popup?: string;
     color?: string;
   }>;
+  polygons?: PolygonData[];
   onLocationSelect?: (lat: number, lng: number) => void;
   interactive?: boolean;
   className?: string;
@@ -22,6 +30,7 @@ export default function MapPicker({
   center = [-5.4254, 105.2580],
   zoom = 12,
   markers = [],
+  polygons = [],
   onLocationSelect,
   interactive = true,
   style,
@@ -75,6 +84,25 @@ export default function MapPicker({
     (map as any)._customMarkers = markerInstances;
     (map as any)._createIcon = createIcon;
 
+    // Add initial polygons
+    const polygonInstances: any[] = [];
+    polygons.forEach((p) => {
+      if (p.coordinates && p.coordinates.length >= 3) {
+        const poly = L.polygon(p.coordinates, {
+          color: p.color || '#16a34a',
+          weight: 2,
+          fillColor: p.color || '#16a34a',
+          fillOpacity: 0.15,
+        }).addTo(map);
+        if (p.name) {
+          poly.bindPopup(`<div style="font-family:Inter,sans-serif"><strong>${p.name}</strong>${p.description ? `<br/><span style="color:#64748b;font-size:12px">${p.description}</span>` : ''}</div>`);
+          poly.bindTooltip(p.name, { sticky: true, className: 'leaflet-tooltip-custom' });
+        }
+        polygonInstances.push(poly);
+      }
+    });
+    (map as any)._customPolygons = polygonInstances;
+
     // Interactive click
     if (interactive && onLocationSelect) {
       let clickMarker: unknown = null;
@@ -116,6 +144,7 @@ export default function MapPicker({
   }, [centerLat, centerLng]);
 
   const markersJson = JSON.stringify(markers);
+  const polygonsJson = JSON.stringify(polygons);
 
   // Update markers when prop changes
   useEffect(() => {
@@ -140,6 +169,37 @@ export default function MapPicker({
       }
     }
   }, [markersJson]);
+
+  // Update polygons when prop changes
+  useEffect(() => {
+    if (mapInstanceRef.current) {
+      const map = mapInstanceRef.current as any;
+
+      // Remove old polygons
+      if (map._customPolygons) {
+        map._customPolygons.forEach((poly: any) => poly.remove());
+      }
+
+      // Add new polygons
+      const polygonInstances: any[] = [];
+      polygons.forEach((p) => {
+        if (p.coordinates && p.coordinates.length >= 3) {
+          const poly = L.polygon(p.coordinates, {
+            color: p.color || '#16a34a',
+            weight: 2,
+            fillColor: p.color || '#16a34a',
+            fillOpacity: 0.15,
+          }).addTo(map);
+          if (p.name) {
+            poly.bindPopup(`<div style="font-family:Inter,sans-serif"><strong>${p.name}</strong>${p.description ? `<br/><span style="color:#64748b;font-size:12px">${p.description}</span>` : ''}</div>`);
+            poly.bindTooltip(p.name, { sticky: true, className: 'leaflet-tooltip-custom' });
+          }
+          polygonInstances.push(poly);
+        }
+      });
+      (map as any)._customPolygons = polygonInstances;
+    }
+  }, [polygonsJson]);
 
   if (!mounted) {
     return (
