@@ -34,7 +34,7 @@ export default function RegisterPage() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { full_name: name } },
@@ -44,8 +44,38 @@ export default function RegisterPage() {
       setError(error.message);
       setLoading(false);
     } else {
+      // Insert profile with is_verified = false
+      if (data.user) {
+        await supabase.from('profiles').insert({
+          id: data.user.id,
+          full_name: name,
+          email: email,
+          role: 'warga',
+          is_verified: false,
+        });
+
+        // Notify admin about new registration
+        // Find admin user id by email
+        const { data: adminProfiles } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('role', 'admin')
+          .limit(1);
+
+        if (adminProfiles && adminProfiles.length > 0) {
+          await supabase.from('notifications').insert({
+            user_id: adminProfiles[0].id,
+            title: 'Pendaftaran Warga Baru',
+            message: `${name} (${email}) mendaftar dan menunggu verifikasi akun.`,
+            type: 'verification',
+            link: '/admin/verify-users',
+          });
+        }
+      }
+
+      // Sign out immediately — user can't login until verified
+      await supabase.auth.signOut();
       setSuccess(true);
-      setTimeout(() => router.push('/login'), 2500);
     }
   };
 
@@ -163,16 +193,24 @@ export default function RegisterPage() {
           {/* Success state */}
           {success ? (
             <div style={{
-              padding: '24px', borderRadius: '16px', textAlign: 'center',
+              padding: '28px', borderRadius: '16px', textAlign: 'center',
               background: '#f0fdf4', border: '1px solid #bbf7d0',
             }}>
-              <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎉</div>
-              <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '18px', fontWeight: 700, color: '#15803d', margin: '0 0 6px' }}>
-                Pendaftaran Berhasil!
+              <div style={{ fontSize: '48px', marginBottom: '12px' }}>📋</div>
+              <h3 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '18px', fontWeight: 700, color: '#15803d', margin: '0 0 8px' }}>
+                Pendaftaran Terkirim!
               </h3>
-              <p style={{ fontSize: '13px', color: '#4b7c59', margin: 0 }}>
-                Anda akan diarahkan ke halaman masuk...
+              <p style={{ fontSize: '13px', color: '#4b7c59', margin: '0 0 16px', lineHeight: 1.6 }}>
+                Akun Anda sedang menunggu verifikasi dari admin desa. Anda akan diberitahu setelah akun disetujui.
               </p>
+              <Link href="/login" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '10px 20px', borderRadius: 10,
+                background: 'linear-gradient(135deg,#16a34a,#15803d)',
+                color: 'white', textDecoration: 'none', fontWeight: 600, fontSize: 13,
+              }}>
+                Kembali ke Halaman Masuk
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
