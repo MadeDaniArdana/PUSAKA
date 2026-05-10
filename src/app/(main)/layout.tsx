@@ -1,6 +1,7 @@
 'use client';
 
 import Sidebar from '@/components/Sidebar';
+import Navbar from '@/components/Navbar';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
@@ -44,11 +45,16 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full bg-slate-50 overflow-hidden">
-      <Sidebar />
-      <main className="flex-1 overflow-auto flex flex-col w-full relative pb-[60px] md:pb-0">
-        {children}
-      </main>
+    <div className="flex flex-col h-screen w-full bg-slate-50 overflow-hidden">
+      {/* Global Navbar — top */}
+      <Navbar />
+      {/* Sidebar + Content — below navbar */}
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 overflow-auto flex flex-col w-full relative pb-[60px] md:pb-0">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

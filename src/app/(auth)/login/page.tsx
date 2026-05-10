@@ -28,12 +28,37 @@ function LoginContent() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setError('Email atau kata sandi salah. Silakan periksa kembali.');
       setLoading(false);
     } else {
-      router.push(role === 'admin' ? '/admin' : redirectTo);
+      // Admin bypasses verification
+      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+      if (role === 'admin' || (adminEmail && email.toLowerCase() === adminEmail.toLowerCase())) {
+        router.push('/admin');
+        router.refresh();
+        return;
+      }
+
+      // Check if warga is verified
+      if (authData.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_verified')
+          .eq('id', authData.user.id)
+          .single();
+
+        if (profile && !profile.is_verified) {
+          // Not verified — sign out and show error
+          await supabase.auth.signOut();
+          setError('Akun Anda belum diverifikasi oleh admin desa. Silakan tunggu persetujuan.');
+          setLoading(false);
+          return;
+        }
+      }
+
+      router.push(redirectTo);
       router.refresh();
     }
   };

@@ -32,6 +32,9 @@
   --sidebar-width: 108px;
   --sidebar-bg: #0f172a;
   --sidebar-active: #16a34a;
+
+  /* Navbar */
+  --navbar-height: 56px;
 }
 
 @theme inline {
@@ -172,19 +175,50 @@ body {
    RESPONSIVE — Landing Page (page.tsx)
    ════════════════════════════════════════ */
 
-/* Landing page navbar */
-.landing-nav {
-  position: fixed;
+/* Global navbar */
+.global-nav {
+  position: sticky;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  padding: 14px 32px;
+  height: var(--navbar-height);
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid #e2e8f0;
   box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+
+/* Desktop nav links */
+.nav-links-desktop {
+  display: flex;
+}
+
+/* Mobile toggle */
+.nav-mobile-toggle {
+  display: none !important;
+}
+
+/* Mobile dropdown */
+.nav-mobile-dropdown {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .global-nav {
+    padding: 0 16px;
+  }
+  .nav-links-desktop {
+    display: none !important;
+  }
+  .nav-mobile-toggle {
+    display: flex !important;
+  }
+  .nav-mobile-dropdown {
+    display: block;
+  }
 }
 
 /* Hero two-column grid */
@@ -288,5 +322,15 @@ body {
   .villages-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* User menu dropdown animation */
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.user-menu-dropdown {
+  animation: dropdownFadeIn 0.2s ease-out forwards;
 }
 

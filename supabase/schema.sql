@@ -1,6 +1,72 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- ═══════════════════════════════════════════
+-- User Profiles (Verification System)
+-- ═══════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    full_name TEXT,
+    email TEXT,
+    role TEXT NOT NULL DEFAULT 'warga',
+    is_verified BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Everyone can read profiles
+DROP POLICY IF EXISTS "Allow public read profiles" ON public.profiles;
+CREATE POLICY "Allow public read profiles" ON public.profiles FOR SELECT USING (true);
+
+-- Users can insert their own profile
+DROP POLICY IF EXISTS "Allow users insert own profile" ON public.profiles;
+CREATE POLICY "Allow users insert own profile" ON public.profiles FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
+
+-- Users can update their own profile
+DROP POLICY IF EXISTS "Allow users update own profile" ON public.profiles;
+CREATE POLICY "Allow users update own profile" ON public.profiles FOR UPDATE TO authenticated USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+
+-- Admin can update any profile (for verification)
+DROP POLICY IF EXISTS "Allow admin update any profile" ON public.profiles;
+CREATE POLICY "Allow admin update any profile" ON public.profiles FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+
+-- ═══════════════════════════════════════════
+-- Notifications
+-- ═══════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS public.notifications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    type TEXT NOT NULL DEFAULT 'info',
+    is_read BOOLEAN NOT NULL DEFAULT false,
+    link TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+
+-- Users can read their own notifications
+DROP POLICY IF EXISTS "Allow users read own notifications" ON public.notifications;
+CREATE POLICY "Allow users read own notifications" ON public.notifications FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+-- System/admin can insert notifications for any user
+DROP POLICY IF EXISTS "Allow authenticated insert notifications" ON public.notifications;
+CREATE POLICY "Allow authenticated insert notifications" ON public.notifications FOR INSERT TO authenticated WITH CHECK (true);
+
+-- Users can update (mark as read) their own notifications
+DROP POLICY IF EXISTS "Allow users update own notifications" ON public.notifications;
+CREATE POLICY "Allow users update own notifications" ON public.notifications FOR UPDATE TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+-- Enable realtime for notifications
+ALTER PUBLICATION supabase_realtime ADD TABLE public.notifications;
+
+-- ═══════════════════════════════════════════
+-- Existing tables below (unchanged)
+-- ═══════════════════════════════════════════
+
 -- Create `reports` table for Environment Reports
 CREATE TABLE IF NOT EXISTS public.reports (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

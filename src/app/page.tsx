@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,6 +8,7 @@ import {
   ArrowRight, MapPin, Users, FileText, ShoppingBag,
   Zap, Shield, Globe, ChevronRight, CheckCircle,
 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -149,40 +150,13 @@ export default function BerandaPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#0f172a', fontFamily: 'Inter, sans-serif' }}>
 
-      {/* Navbar */}
-      <nav className="landing-nav">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: 10,
-            background: 'linear-gradient(135deg,#16a34a,#15803d)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(22,163,74,0.35)',
-          }}>
-            <Globe size={20} color="white" />
-          </div>
-          <div>
-            <p style={{ fontFamily: 'Outfit', fontSize: 18, fontWeight: 800, margin: 0, color: '#0f172a' }}>PUSAKA</p>
-            <p style={{ fontSize: 9, color: '#16a34a', margin: 0, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Smart Village Hub</p>
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <Link href="/login" style={{ fontSize: 13, color: '#475569', textDecoration: 'none', fontWeight: 500, padding: '8px 16px', borderRadius: 8, transition: 'background 0.2s' }}>
-            Masuk
-          </Link>
-          <Link href="/register" style={{
-            fontSize: 13, color: 'white', textDecoration: 'none', fontWeight: 600,
-            padding: '8px 20px', background: 'linear-gradient(135deg,#16a34a,#15803d)',
-            borderRadius: 8, boxShadow: '0 4px 12px rgba(22,163,74,0.3)',
-          }}>
-            Daftar Gratis
-          </Link>
-        </div>
-      </nav>
+      {/* Global Navbar */}
+      <Navbar />
 
       {/* Hero */}
       <section ref={heroRef} style={{
-        minHeight: '100vh', display: 'flex', alignItems: 'center',
-        padding: '100px 0 0', position: 'relative', overflow: 'hidden',
+        minHeight: 'calc(100vh - var(--navbar-height))', display: 'flex', alignItems: 'center',
+        padding: '40px 0 0', position: 'relative', overflow: 'hidden',
         background: 'linear-gradient(160deg, #f0fdf4 0%, #eff6ff 60%, #faf5ff 100%)',
       }}>
         {/* Decorative blobs */}

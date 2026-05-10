@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Bell,
   AlertTriangle,
   FileText,
   ShoppingBag,
@@ -80,7 +79,7 @@ export default function OverviewPage() {
   const [stats, setStats] = useState({ activeReports: 0, totalReports: 0, approvedRequests: 0, totalRequests: 0 });
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [userName, setUserName] = useState('Warga');
-  const [showNotif, setShowNotif] = useState(false);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -150,48 +149,6 @@ export default function OverviewPage() {
           <p style={{ color: '#94a3b8', fontSize: '14px', marginTop: '4px' }}>
             Ini yang sedang terjadi di desa Anda hari ini.
           </p>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
-          <button
-            onClick={() => setShowNotif(!showNotif)}
-            style={{
-              width: 40, height: 40, borderRadius: '50%', border: '1px solid #e2e8f0',
-              background: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              position: 'relative',
-            }}
-          >
-            <Bell size={18} color="#475569" />
-            <span style={{
-              position: 'absolute', top: 8, right: 8, width: 8, height: 8,
-              background: '#ef4444', borderRadius: '50%', border: '2px solid white',
-            }} />
-          </button>
-          
-          {showNotif && (
-            <div style={{
-              position: 'absolute', top: 50, right: 50, width: 280, background: 'white', 
-              border: '1px solid #e2e8f0', borderRadius: '16px', padding: '16px', 
-              boxShadow: '0 10px 25px rgba(0,0,0,0.1)', zIndex: 100
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h3 style={{ margin: 0, fontFamily: 'Outfit', fontSize: '15px', color: '#0f172a', fontWeight: 700 }}>Notifikasi</h3>
-                <span style={{ fontSize: '11px', color: '#16a34a', fontWeight: 600, background: '#f0fdf4', padding: '2px 8px', borderRadius: '10px' }}>Baru</span>
-              </div>
-              <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '12px', marginBottom: '8px' }}>
-                <p style={{ margin: '0 0 4px', fontSize: '13px', color: '#334155', fontWeight: 500 }}>Selamat datang di PUSAKA!</p>
-                <p style={{ margin: 0, fontSize: '12px', color: '#64748b', lineHeight: 1.4 }}>Portal cerdas desa telah aktif. Anda kini dapat melaporkan infrastruktur dan mengajukan surat digital.</p>
-              </div>
-            </div>
-          )}
-
-          <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', border: '2px solid #e2e8f0' }}>
-            <div style={{
-              width: '100%', height: '100%',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'white', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase',
-            }}>{userName.charAt(0)}</div>
-          </div>
         </div>
       </div>
 

@@ -14,7 +14,6 @@ const navSections = [
   {
     label: 'OVERVIEW',
     items: [
-      { href: '/', label: 'Beranda', icon: Globe },
       { href: '/overview', label: 'Dashboard', icon: LayoutDashboard },
     ],
   },
@@ -137,57 +136,6 @@ export default function Sidebar() {
               </Link>
             );
           })}
-
-          {/* User / Login button */}
-          {!loading && (
-            user ? (
-              <button
-                onClick={handleLogout}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 3,
-                  flex: 1,
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: '#94a3b8',
-                }}
-              >
-                <div style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg,#16a34a,#15803d)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 800,
-                  fontSize: 11,
-                }}>
-                  {avatarLetter}
-                </div>
-                <span style={{ fontSize: 9, lineHeight: 1, fontWeight: 500 }}>Akun</span>
-              </button>
-            ) : (
-              <Link href="/login" style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 3,
-                flex: 1,
-                textDecoration: 'none',
-                color: '#16a34a',
-              }}>
-                <LogIn size={19} strokeWidth={1.8} />
-                <span style={{ fontSize: 9, lineHeight: 1, fontWeight: 700 }}>Masuk</span>
-              </Link>
-            )
-          )}
         </div>
       </nav>
 
@@ -229,35 +177,6 @@ export default function Sidebar() {
           {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
 
-        {/* Logo */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          padding: collapsed ? '24px 0 20px' : '24px 20px 20px',
-          justifyContent: collapsed ? 'center' : 'flex-start',
-          borderBottom: '1px solid #f1f5f9',
-        }}>
-          <div style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'linear-gradient(135deg,#16a34a,#15803d)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(22,163,74,0.30)',
-            flexShrink: 0,
-          }}>
-            <Globe size={18} color="white" />
-          </div>
-          {!collapsed && (
-            <div>
-              <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 15, fontWeight: 800, margin: 0, color: '#0f172a', lineHeight: 1.2 }}>PUSAKA</p>
-              <p style={{ fontSize: 10, color: '#16a34a', margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Smart Village Hub</p>
-            </div>
-          )}
-        </div>
 
         {/* New Report Button */}
         <div style={{ padding: collapsed ? '12px 8px' : '12px 12px 8px' }}>
@@ -402,85 +321,7 @@ export default function Sidebar() {
           )}
         </nav>
 
-        {/* Bottom — User Profile */}
-        <div style={{
-          borderTop: '1px solid #f1f5f9',
-          padding: collapsed ? '12px 8px' : '12px 14px',
-        }}>
-          {!loading && (
-            user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: collapsed ? 'center' : 'flex-start' }}>
-                <div style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg,#16a34a,#15803d)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 800,
-                  fontSize: 13,
-                  flexShrink: 0,
-                  border: '2px solid #dcfce7',
-                }}>
-                  {avatarLetter}
-                </div>
-                {!collapsed && (
-                  <>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {displayName}
-                      </p>
-                      <p style={{ fontSize: 10, color: '#94a3b8', margin: 0, fontWeight: 500 }}>Warga</p>
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      title="Logout"
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer',
-                        color: '#cbd5e1',
-                        padding: 4,
-                        borderRadius: 8,
-                        display: 'flex',
-                        alignItems: 'center',
-                        transition: 'color 0.2s, background 0.2s',
-                      }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#dc2626'; (e.currentTarget as HTMLButtonElement).style.background = '#fef2f2'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#cbd5e1'; (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
-                    >
-                      <LogOut size={15} />
-                    </button>
-                  </>
-                )}
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  borderRadius: 12,
-                  background: 'rgba(22,163,74,0.08)',
-                  border: '1px solid rgba(22,163,74,0.2)',
-                  color: '#16a34a',
-                  textDecoration: 'none',
-                  padding: collapsed ? '10px 0' : '9px 14px',
-                  justifyContent: collapsed ? 'center' : 'flex-start',
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(22,163,74,0.14)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(22,163,74,0.08)'; }}
-              >
-                <LogIn size={15} />
-                {!collapsed && <span style={{ fontSize: 13, fontWeight: 600 }}>Masuk</span>}
-              </Link>
-            )
-          )}
-        </div>
+
       </aside>
 
       {/* Login Prompt Modal */}
